@@ -129,7 +129,7 @@ fn index(flash: Option<FlashMessage>) -> Template {
     }).unwrap();
 
     Template::render("index", Ji {
-        title: "Ji".to_string(),
+        title: "Tux".to_string(),
         message: flash.map(|flash| flash.message().to_string()),
         projects,
     })
