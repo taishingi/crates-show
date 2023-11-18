@@ -3,7 +3,7 @@ Description=Server web to aniministrate cargo project
 After=network.target
 
 [Service]
-Type=simple
+Type=oneshot
 ExecStart=/usr/bin/tux
 ExecStartPost=/usr/bin/notify-send "tux are running"
 [Install]
