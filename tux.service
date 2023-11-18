@@ -1,10 +1,9 @@
 [Unit]
 Description=Server web to aniministrate cargo project
-After=graphical.target
+After=network.target
 
 [Service]
 Type=simple
 ExecStart=/usr/bin/tux
-ExecStartPost=/usr/bin/notify-send "tux are running at http://127.0.0.1:3000"
 [Install]
 WantedBy=default.target
