@@ -6,6 +6,6 @@ if [ -d "${DIR}" ];then
     cd "${DIR}" && "${HOME}"/.cargo/bin/cargo run --release
 else
   git clone https://github.com/taishingi/tux.git "${DIR}" && cd "${DIR}" || exit 1
- "${HOME}"/.cargo/bin/cargo build --release || exit 1
+ "${HOME}"/.cargo/bin/car go build --release || exit 1
  "${HOME}"/.cargo/bin/cargo run --release &
 fi

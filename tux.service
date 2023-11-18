@@ -6,4 +6,4 @@ After=network.target
 Type=simple
 ExecStart=/usr/bin/tux
 [Install]
-WantedBy=default.target
+WantedBy=graphical-session.target
