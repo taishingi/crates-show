@@ -1,8 +1,10 @@
 #!/usr/bin/env bash
 
-if [ -d /usr/local/bin/tux-server ];then
-    cd /usr/local/bin/tux-server &&  /home/"${1}"/.cargo/bin/cargo run || exit 1
+DIR="${HOME}/.tux-server"
+
+if [ -d "${DIR}" ];then
+    cd "${DIR}" && "${HOME}"/.cargo/bin/cargo run
 else
-  git clone https://github.com/taishingi/tux.git /usr/local/bin/tux-server && cd /usr/local/bin/tux-server || exit 1
-  /home/"${1}"/.cargo/bin/cargo run
+  git clone https://github.com/taishingi/tux.git "${DIR}" && cd "${DIR}" || exit 1
+ "${HOME}"/.cargo/bin/cargo run
 fi
