@@ -1,0 +1,9 @@
+[Unit]
+Description=Server web to aniministrate cargo project
+After=network.target
+
+[Service]
+Type=oneshot
+ExecStart=/usr/bin/tux %u
+[Install]
+WantedBy=multi-user.target
