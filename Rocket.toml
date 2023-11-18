@@ -1,2 +1,11 @@
 [default]
 template_dir = "templates"
+
+[default.shutdown]
+ctrlc = true
+signals = ["term", "hup"]
+grace = 5
+mercy = 5
+
+[release]
+port = 3000
