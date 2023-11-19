@@ -7,7 +7,7 @@
                 <p class="flash">{{ message }}</p>
             {% endif %}
         </div>
-        <input type="search" name="search"   class="search" id="search" placeholder="Search">
+        <input type="search" name="search" class="search" id="search" placeholder="Search" autofocus="autofocus">
             <ul id="myList">
             {% for k, v in projects %}
                 <li>
@@ -60,6 +60,12 @@
                                 <form action="/uninstall/{{k}}" method="post">
                                     <button class="btn" type="submit">uninstall</button>
                                 </form>
+                            </div>
+                            <div class="badges">
+                                <img alt="Crates.io" src="https://img.shields.io/crates/d/{{k}}">
+                                <img alt="Crates.io (recent)" src="https://img.shields.io/crates/dr/{{k}}">
+                                <img alt="Crates.io" src="https://img.shields.io/crates/v/{{k}}">
+                                <img alt="docs.rs" src="https://img.shields.io/docsrs/{{k}}">
                             </div>
                         </div>
                     </div>
