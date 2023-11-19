@@ -66,6 +66,7 @@
                                 <img alt="Crates.io (recent)" src="https://img.shields.io/crates/dr/{{k}}">
                                 <img alt="Crates.io" src="https://img.shields.io/crates/v/{{k}}">
                                 <img alt="docs.rs" src="https://img.shields.io/docsrs/{{k}}">
+                                <img alt="Crates.io" src="https://img.shields.io/crates/l/{{k}}">
                             </div>
                         </div>
                     </div>
