@@ -43,7 +43,11 @@ http://127.0.0.1:3000
 ## Update 
 
 ```shell
-systemctl restart --user tux.service
+systemctl stop --user tux.service
+```
+
+```shell
+systemctl start --user tux.service
 ```
 
 ## Project directory
