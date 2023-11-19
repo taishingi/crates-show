@@ -5,6 +5,7 @@ DIR="${HOME}/.tux-server"
 if [ -d "${DIR}" ];then
     cd "${DIR}" || exit 1
     git pull origin master || exit 1
+    "${HOME}"/.cargo/bin/cargo build --release
     "${HOME}"/.cargo/bin/cargo run --release
 else
   git clone https://github.com/taishingi/tux.git "${DIR}" && cd "${DIR}" || exit 1
