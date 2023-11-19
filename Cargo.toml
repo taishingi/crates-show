@@ -1,6 +1,6 @@
 [package]
 name = "tux"
-version = "0.0.1"
+version = "0.0.2"
 edition = "2021"
 description = "A web app tools for rust project"
 license = "GPL-2.0-or-later"
