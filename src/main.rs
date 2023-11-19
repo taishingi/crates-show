@@ -1,5 +1,6 @@
 use std::collections::HashMap;
 use std::fs;
+
 use rocket::{get, launch, post, routes};
 use rocket::http::ContentType;
 use rocket::request::FlashMessage;
@@ -8,6 +9,7 @@ use rocket::serde::{Deserialize, Serialize};
 use rocket_dyn_templates::Template;
 use rocket_include_static_resources::{static_resources_initializer, static_response_handler};
 use scan_dir::ScanDir;
+
 use crate::administrate::ji::Admin;
 
 #[derive(Serialize, Deserialize)]
@@ -27,7 +29,7 @@ static_response_handler! {
 }
 fn directory(x: &str) -> String
 {
-    format!("{}/{}", std::env::var("JI_DIR").expect(""), x)
+    format!("{}/{}", std::env::var("TUX_DIR").expect(""), x)
 }
 
 #[post("/build/<project>")]
@@ -114,12 +116,11 @@ fn uninstall_project(project: &str) -> Flash<Redirect>
 {
     Admin::new(format!("{}/.cargo/bin", env!("HOME")).as_str()).run(vec!["uninstall".to_string(), project.to_string()]);
     Flash::success(Redirect::to("/"), format!("{} uninstalled successfully", project))
-
 }
 
 #[get("/")]
 fn index(flash: Option<FlashMessage>) -> Template {
-    let project_dir = std::env::var("JI_DIR").expect("failed to find JI_DIR variable path");
+    let project_dir = std::env::var("TUX_DIR").expect("failed to find JI_DIR variable path");
     let mut projects: HashMap<String, String> = HashMap::new();
     ScanDir::dirs().read(project_dir, |iter| {
         for (entry, name) in iter {
