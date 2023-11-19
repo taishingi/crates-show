@@ -36,7 +36,7 @@ systemctl start --user tux.service
 
 > Service access url
 
-```http request
+```http
 http://127.0.0.1:3000
 ```
 
