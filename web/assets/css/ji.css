@@ -3,7 +3,9 @@
     --container-width: calc(100% - var(--container-padding) * 2);
     --container-max-width: 80%;
 }
-
+a{
+    text-decoration: none;
+}
 .container {
     width: var(--container-width);
     max-width: var(--container-max-width);
@@ -17,6 +19,10 @@
     justify-content: center;
     align-content: center;
     column-gap: 5px;
+}
+.space{
+    text-align: center;
+    margin: 5%;
 }
 
 body {
@@ -71,9 +77,41 @@ input[type=search] {
     text-align: justify;
     position: absolute;
     width: 250px;
-    left: calc(var(--container-max-width) /2 + calc(var(--container-padding)));
+    left: calc(var(--container-max-width) / 2 + calc(var(--container-padding)));
     top: 20px;
 
+}
+
+.flash-container-error {
+    color: darkred;
+    font-weight: bold;
+    background: white;
+    width: calc(var(--container-width) / 2);
+}
+
+.flash-container-test {
+    color: mediumblue;
+    font-weight: bold;
+    background: white;
+    width: calc(var(--container-width) / 2);
+}
+
+.flash-container-run {
+        background: white;
+    width: calc(var(--container-width) / 2);
+}
+
+.flash-container-clippy {
+    color: cornflowerblue;
+    font-weight: bold;
+    background: white;
+    width: calc(var(--container-width) / 2);
+}
+.flash-container-bench {
+    color: blueviolet;
+    font-weight: bold;
+    background: white;
+    width: calc(var(--container-width) / 2);
 }
 
 .flash-container {
@@ -81,9 +119,9 @@ input[type=search] {
     color: green;
     text-align: justify;
     position: absolute;
-    width: 300px;
+    width: 400px;
     top: 1px;
-    left: calc(var(--container-max-width) /3);
+    left: calc(var(--container-max-width) / 4);
 }
 
 li {

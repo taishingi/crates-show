@@ -1,0 +1,22 @@
+{% extends "base" %}
+
+{% block content %}
+<div class="container">
+    <div class="flash-container-clippy">
+        <pre>
+            {{message}}
+        </pre>
+    </div>
+    <div class="action">
+        <form action="/" method="get">
+            <button type="submit" class="btn"> Return</button>
+        </form>
+        <form action="/clippy/{{project}}" method="post">
+            <button type="submit" class="btn"> Retry</button>
+        </form>
+        <form action="/open/{{editor}}/{{project}}" method="post">
+            <button type="submit" class="btn"> Open editor</button>
+        </form>
+    </div>
+</div>
+{% endblock content %}

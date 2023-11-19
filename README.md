@@ -15,6 +15,10 @@ echo "set -x TUX_DIR $HOME/RustroverProjects" >> $HOME/.config/fish/config.fish
 ```
 
 ```shell
+echo "set -x TUX_EDITOR rustrover" >> $HOME/.config/fish/config.fish
+```
+
+```shell
 git clone https://github.com/taishingi/tux.git /tmp/tux && cd /tmp/tux
 ```
 

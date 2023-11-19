@@ -1,7 +1,6 @@
 [Unit]
 Description=Server web to aniministrate cargo project
 After=network.target
-
 [Service]
 Type=simple
 ExecStart=/usr/bin/tux
