@@ -3,6 +3,7 @@ use std::fs;
 use std::ops::Add;
 use std::process::Command;
 use std::string::String;
+
 use rocket::{get, launch, post, routes};
 use rocket::http::ContentType;
 use rocket::request::FlashMessage;
@@ -217,7 +218,7 @@ fn index(flash: Option<FlashMessage>) -> Template {
 #[post("/open/<editor>/<project>")]
 fn open(editor: &str, project: &str) -> Flash<Redirect>
 {
-    assert!(Command::new(editor).arg(directory(project).as_str()).spawn().expect("failed to open editor").wait().expect("").success());
+    Command::new(editor).arg(directory(project).as_str()).spawn().expect("failed to open editor");
     Flash::success(Redirect::to("/"), format!("The {} project or has been opened", project).as_str())
 }
 
