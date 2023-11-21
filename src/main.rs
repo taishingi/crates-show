@@ -4,6 +4,7 @@ use std::ops::Add;
 use std::process::Command;
 use std::string::String;
 
+use printers::printer::JobStatus;
 use rocket::{get, launch, post, routes};
 use rocket::http::ContentType;
 use rocket::request::FlashMessage;
@@ -14,8 +15,10 @@ use rocket_include_static_resources::{static_resources_initializer, static_respo
 use scan_dir::ScanDir;
 
 use crate::administrate::ji::Admin;
+use crate::printable::ji::Impress;
 
 mod administrate;
+mod printable;
 
 #[derive(Serialize, Deserialize)]
 struct Tux
@@ -52,6 +55,19 @@ fn directory(x: &str) -> String
 fn build_project(project: &str) -> Flash<Redirect>
 {
     Admin::new(directory(project).as_str()).run(vec!["build".to_string()], format!("{} has been built successfully", project).as_str(), project, "build", "")
+}
+
+#[post("/print/<filename>")]
+fn print_file(filename: &str) -> Flash<Redirect>
+{
+    match Impress::new().print(filename).status {
+        JobStatus::SUCCESS => {
+            Flash::success(Redirect::to("/"), format!("The {} file has been successfully printed", filename).as_str())
+        }
+        JobStatus::FAILED => {
+            Flash::error(Redirect::to("/"), format!("Failed to printed {}", filename).as_str())
+        }
+    }
 }
 
 #[post("/check/<project>")]
@@ -260,5 +276,5 @@ fn rocket() -> _ {
             "favicon" => "web/assets/favicon.ico",
             "favicon-png" => "web/assets/favicon-16x16.png",
             "/assets/manifest.json" => "web/assets/manifest.json",
-        )).attach(Template::fairing()).mount("/", routes![favicon, favicon_png,favicon_json]).mount("/", routes![index,css,js,build_project,check_project,doc_project,run_project,test_project,bench_project,update_project,clippy_project,publish_project,install_project,uninstall_project,clean_project,delete_repo,yank_repo,fail_normal,fail_with_version,yank_repo_post,open,test_project_result,bench_project_result,run_project_result,clippy_project_result])
+        )).attach(Template::fairing()).mount("/", routes![favicon, favicon_png,favicon_json]).mount("/", routes![index,css,js,build_project,check_project,doc_project,run_project,test_project,bench_project,update_project,clippy_project,publish_project,install_project,uninstall_project,clean_project,delete_repo,yank_repo,fail_normal,fail_with_version,yank_repo_post,open,test_project_result,bench_project_result,run_project_result,clippy_project_result,print_file])
 }

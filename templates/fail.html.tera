@@ -2,6 +2,11 @@
 
 {% block content %}
 <div class="container">
+    <div class="action">
+        <form action="/print/logs.txt" method="post">
+            <button type="submit" class="btn">print</button>
+        </form>
+    </div>
     <div class="flash-container-error">
         {% if errors %}
         <pre>
@@ -11,13 +16,13 @@
     </div>
     <div class="action">
         <form action="/" method="get">
-            <button type="submit" class="btn"> Return</button>
+            <button type="submit" class="btn">Return</button>
         </form>
         <form action="/{{url}}" method="post">
-            <button type="submit" class="btn"> Retry</button>
+            <button type="submit" class="btn">Retry</button>
         </form>
         <form action="/open/{{editor}}/{{project}}" method="post">
-            <button type="submit" class="btn"> Open editor</button>
+            <button type="submit" class="btn">Open</button>
         </form>
     </div>
 </div>

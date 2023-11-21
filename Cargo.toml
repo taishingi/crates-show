@@ -24,6 +24,7 @@ askama = "0.12.1"
 tera = { version = "1.19.1", default-features = false }
 rocket_contrib = "0.4.11"
 scan_dir = "0.3.3"
+printers = "1.2.0"
 [dependencies.rocket_dyn_templates]
 version = "0.1.0-rc.4"
 features = ["handlebars", "tera"]
