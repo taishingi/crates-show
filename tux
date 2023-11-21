@@ -1,15 +1,17 @@
 #!/usr/bin/env bash
 
 DIR="${HOME}/.tux-server"
-
+systemctl is-active --quiet tux && systemctl stop --user tux
 if [ -d "${DIR}" ];then
     cd "${DIR}" || exit 1
-    systemctl --user stop tux.service
+
     git pull origin master || exit 1
     "${HOME}"/.cargo/bin/cargo build --release
-    systemctl --user start tux.service && "${HOME}"/.cargo/bin/cargo run --release
+    "${HOME}"/.cargo/bin/cargo run --release
 else
   git clone https://github.com/taishingi/tux.git "${DIR}" && cd "${DIR}" || exit 1
  "${HOME}"/.cargo/bin/cargo build --release || exit 1
  "${HOME}"/.cargo/bin/cargo run --release
 fi
+# shellcheck disable=SC2015
+systemctl is-active --quiet tux && systemctl stop --user tux || systemctl start --user tux
