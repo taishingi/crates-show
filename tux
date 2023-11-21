@@ -4,9 +4,10 @@ DIR="${HOME}/.tux-server"
 
 if [ -d "${DIR}" ];then
     cd "${DIR}" || exit 1
+    systemctl --user stop tux.service
     git pull origin master || exit 1
     "${HOME}"/.cargo/bin/cargo build --release
-    "${HOME}"/.cargo/bin/cargo run --release
+    systemctl --user start tux.service && "${HOME}"/.cargo/bin/cargo run --release
 else
   git clone https://github.com/taishingi/tux.git "${DIR}" && cd "${DIR}" || exit 1
  "${HOME}"/.cargo/bin/cargo build --release || exit 1
