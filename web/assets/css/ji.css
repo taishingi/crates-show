@@ -3,9 +3,11 @@
     --container-width: calc(100% - var(--container-padding) * 2);
     --container-max-width: 80%;
 }
-a{
+
+a {
     text-decoration: none;
 }
+
 .container {
     width: var(--container-width);
     max-width: var(--container-max-width);
@@ -20,7 +22,8 @@ a{
     align-content: center;
     column-gap: 5px;
 }
-.space{
+
+.space {
     text-align: center;
     margin: 5%;
 }
@@ -68,6 +71,27 @@ body {
     border-bottom-style: solid;
 }
 
+.btn-submit {
+    width: 100%;
+    padding: 12px 20px;
+    margin: 8px 0;
+
+}
+.btn-submit:hover {
+    cursor: pointer;
+}
+
+input[type=text], select {
+    width: 100%;
+    padding: 12px 20px;
+    margin: 8px 0;
+    outline: none;
+    display: inline-block;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
 input[type=search] {
     background-color: white;
     padding: 10px;
@@ -94,7 +118,7 @@ input[type=search] {
 }
 
 .flash-container-run {
-        background: white;
+    background: white;
     width: calc(var(--container-width) / 2);
 }
 
@@ -104,6 +128,7 @@ input[type=search] {
     background: white;
     width: calc(var(--container-width) / 2);
 }
+
 .flash-container-bench {
     color: blueviolet;
     font-weight: bold;

@@ -1,0 +1,30 @@
+{% extends "base" %}
+
+{% block content %}
+<div class="container">
+    <div class="flash-container-clippy">
+        {% if message %}
+        {{message}}
+        {% endif %}
+    </div>
+    <div class="action">
+        <form action="/add-project" method="post">
+            <label>
+                <input type="text" id="project-new-name" name="name" placeholder="Name of project" autofocus="autofocus" class="input">
+            </label>
+            <label>
+                <select name="type" id="project-type">
+                    <option>Binary</option>
+                    <option>Library</option>
+                </select>
+            </label>
+            <button type="submit" id="add-project" class="btn-submit"> create</button>
+        </form>
+    </div>
+    <div class="action">
+        <form action="/" method="get">
+            <button type="submit"  value="/" class="btn">home</button>
+        </form>
+    </div>
+</div>
+{% endblock content %}

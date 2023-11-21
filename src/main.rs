@@ -249,6 +249,36 @@ fn fail_with_version(task: &str, project: &str, version: &str) -> Template {
     })
 }
 
+
+#[get("/add")]
+fn add(flash: Option<FlashMessage>) -> Template {
+    Template::render("add", Tux {
+        title: "Add a new project".to_string(),
+        project: "".to_string(),
+        message: flash.map(|flash| flash.message().to_string()),
+        url: String::new().add("/add"),
+        projects: HashMap::new(),
+        editor: std::env::var("TUX_EDITOR").expect("failed to get tux editor preferences"),
+    })
+}
+
+#[get("/add/<project>/<t>")]
+fn add_project(project: &str, t: &str) -> Flash<Redirect> {
+    match t {
+        "Binary" => {
+            Command::new("cargo").arg("new").arg("--bin").arg(project).current_dir(std::env::var("TUX_DIR").expect("failed to find tux dir")).spawn().expect("failed to create bin project");
+            Flash::success(Redirect::to("/"), format!("The {} binary has been created successfully", project).as_str())
+        },
+        "Library" => {
+            Command::new("cargo").arg("new").arg("--lib").arg(project).current_dir(std::env::var("TUX_DIR").expect("failed to find tux dir")).spawn().expect("failed to create bin project");
+            Flash::success(Redirect::to("/"), format!("The {} library has been created successfully", project).as_str())
+        },
+        _ => {
+            Flash::error(Redirect::to("/add"), "Bad request")
+        }
+    }
+}
+
 #[get("/fail/<task>/<project>")]
 fn fail_normal(task: &str, project: &str) -> Template {
     Template::render("fail", TuxFailure {
@@ -276,5 +306,5 @@ fn rocket() -> _ {
             "favicon" => "web/assets/favicon.ico",
             "favicon-png" => "web/assets/favicon-16x16.png",
             "/assets/manifest.json" => "web/assets/manifest.json",
-        )).attach(Template::fairing()).mount("/", routes![favicon, favicon_png,favicon_json]).mount("/", routes![index,css,js,build_project,check_project,doc_project,run_project,test_project,bench_project,update_project,clippy_project,publish_project,install_project,uninstall_project,clean_project,delete_repo,yank_repo,fail_normal,fail_with_version,yank_repo_post,open,test_project_result,bench_project_result,run_project_result,clippy_project_result,print_file])
+        )).attach(Template::fairing()).mount("/", routes![favicon, favicon_png,favicon_json]).mount("/", routes![index,css,js,build_project,check_project,doc_project,run_project,test_project,bench_project,update_project,clippy_project,publish_project,install_project,uninstall_project,clean_project,delete_repo,yank_repo,fail_normal,fail_with_version,yank_repo_post,open,test_project_result,bench_project_result,run_project_result,clippy_project_result,print_file,add,add_project])
 }
