@@ -4,7 +4,6 @@ DIR="${HOME}/.tux-server"
 systemctl is-active --quiet tux && systemctl stop --user tux
 if [ -d "${DIR}" ];then
     cd "${DIR}" || exit 1
-
     git pull origin master || exit 1
     "${HOME}"/.cargo/bin/cargo build --release
     "${HOME}"/.cargo/bin/cargo run --release
