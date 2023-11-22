@@ -1,37 +1,32 @@
 {% extends "base" %}
 
 {% block content %}
-<div class="container">
-
+<div class="design-section">
     <div class="action">
-        <div>
-            <form action="/tree" method="post">
-                <button class="btn" type="submit"> tree</button>
-            </form>
-        </div>
-
         <div>
             <form action="/add" method="get">
                 <button class="btn" type="submit"> add</button>
             </form>
         </div>
     </div>
+    <div class="search-container">
+        <label for="search"></label><input type="search" name="search" class="search" id="search" placeholder="Search"
+                                           autofocus="autofocus">
+
+    </div>
     <div class="flash-container">
         {% if message %}
         <p class="flash">{{ message }}</p>
         {% endif %}
     </div>
-    <label for="search"></label><input type="search" name="search" class="search" id="search" placeholder="Search"
-                                       autofocus="autofocus">
-
     <ul id="myList">
         {% for k, v in projects %}
         <li>
             <div id="{{k}}">
-                <div class="card-title">
-                    <h2 class="title">{{k}}</h2>
-                </div>
                 <div class="card">
+                    <div class="card-title">
+                        <h2 class="title">{{k}}</h2>
+                    </div>
                     <div class="action">
                         <form action="/build/{{k}}" method="post">
                             <button class="btn" type="submit">build</button>
@@ -93,6 +88,12 @@
                         </form>
                         <form action="/open/{{editor}}/{{k}}" method="post">
                             <button type="submit" class="btn"> Open</button>
+                        </form>
+
+                    </div>
+                    <div class="action">
+                        <form action="/time/{{k}}" method="get">
+                            <button type="submit" class="btn"> timeline</button>
                         </form>
                     </div>
                 </div>

@@ -4,3 +4,4 @@ logs.txt
 output.txt
 Cargo.lock
 Cargo.lock
+*.db

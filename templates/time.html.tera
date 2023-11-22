@@ -1,0 +1,52 @@
+{% extends "base" %}
+
+{% block content %}
+<div class="container">
+    <form action="/add-end-date" method="get">
+        <input type="hidden" id="project" value="{{project}}">
+
+        <label for="timeline-description"></label><textarea name="description" maxlength="200" minlength="20"
+                                                            id="timeline-description" rows="10" cols="30"
+                                                            placeholder="Description"></textarea>
+        <label for="timeline-end">
+            <input type="date" id="timeline-end">
+        </label>
+        <label>
+            <button type="submit" class="btn-submit" id="add-timeline">add to timeline</button>
+        </label>
+    </form>
+    <form action="/clean-timeline/{{project}}" method="post">
+        <label>
+            <button type="submit" class="btn-submit" id="clean-timeline-db">clean timeline</button>
+        </label>
+    </form>
+    <!--This is the main container that contains the whole timeline.-->
+    <section class="design-section">
+        <div class="timeline">
+            <!--Well, The reason for this div is to fill space.
+    This space is technically used for keeping dates,
+    but I didn't find the need for dates. However, I'll provide
+    you the styling for dates, so that you can use it if you
+    wanted to.-->
+
+            <!--This is the class where the timeline graphics are
+            housed in. Note that we have timeline-circle
+            here for that pointer in timeline.-->
+
+            {% for k, v in projects %}
+            <div class="timeline-empty">
+            </div>
+            <div class="timeline-middle">
+                <div class="timeline-circle"></div>
+
+
+            </div>
+            <div class="timeline-component timeline-content">
+                <h3>{{v}}</h3>
+                <div>{{k}}</div>
+            </div>
+            {% endfor %}
+        </div>
+    </section>
+</div>
+{% endblock content %}

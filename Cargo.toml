@@ -1,6 +1,6 @@
 [package]
 name = "tux"
-version = "0.0.4"
+version = "0.0.5"
 edition = "2021"
 description = "A web app tools for rust project"
 license = "GPL-2.0-or-later"
@@ -25,6 +25,7 @@ tera = { version = "1.19.1", default-features = false }
 rocket_contrib = "0.4.11"
 scan_dir = "0.3.3"
 printers = "1.2.0"
+sqlite = "0.32.0"
 [dependencies.rocket_dyn_templates]
-version = "0.1.0-rc.4"
+version = "0.1.0"
 features = ["handlebars", "tera"]

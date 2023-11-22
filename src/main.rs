@@ -13,6 +13,7 @@ use rocket::serde::{Deserialize, Serialize};
 use rocket_dyn_templates::Template;
 use rocket_include_static_resources::{static_resources_initializer, static_response_handler};
 use scan_dir::ScanDir;
+use sqlite::State;
 
 use crate::administrate::ji::Admin;
 use crate::printable::ji::Impress;
@@ -29,6 +30,14 @@ struct Tux
     project: String,
     message: Option<String>,
     projects: HashMap<String, String>,
+}
+
+#[derive(Serialize, Deserialize)]
+struct TuxTimeline
+{
+    title: String,
+    projects: HashMap<String, String>,
+    project: String,
 }
 
 #[derive(Serialize, Deserialize)]
@@ -68,6 +77,13 @@ fn print_file(filename: &str) -> Flash<Redirect>
             Flash::error(Redirect::to("/"), format!("Failed to printed {}", filename).as_str())
         }
     }
+}
+
+#[post("/clean-timeline/<project>")]
+fn clean_timeline(project: &str) -> Flash<Redirect>
+{
+    fs::remove_file(format!("{}/{}.db", directory(project), project).as_str()).expect("failed to remove database");
+    Flash::success(Redirect::to("/"), format!("The {} project timeline has been cleaned", project).as_str())
 }
 
 #[post("/check/<project>")]
@@ -268,11 +284,11 @@ fn add_project(project: &str, t: &str) -> Flash<Redirect> {
         "Binary" => {
             Command::new("cargo").arg("new").arg("--bin").arg(project).current_dir(std::env::var("TUX_DIR").expect("failed to find tux dir")).spawn().expect("failed to create bin project");
             Flash::success(Redirect::to("/"), format!("The {} binary has been created successfully", project).as_str())
-        },
+        }
         "Library" => {
             Command::new("cargo").arg("new").arg("--lib").arg(project).current_dir(std::env::var("TUX_DIR").expect("failed to find tux dir")).spawn().expect("failed to create bin project");
             Flash::success(Redirect::to("/"), format!("The {} library has been created successfully", project).as_str())
-        },
+        }
         _ => {
             Flash::error(Redirect::to("/add"), "Bad request")
         }
@@ -287,6 +303,48 @@ fn fail_normal(task: &str, project: &str) -> Template {
         errors: fs::read_to_string("./logs.txt").expect("failed to parse file"),
         url: String::new().add(task).add("/").add(project),
         editor: std::env::var("TUX_EDITOR").expect("failed to get tux editor preferences"),
+    })
+}
+
+
+fn timeline_project(project: &str) -> HashMap<String, String>
+{
+    let connection = sqlite::open(format!("{}/{}.db", directory(project), project).as_str()).unwrap();
+    let mut p: HashMap<String, String> = HashMap::new();
+    let query = "SELECT * FROM timeline";
+    let mut statement = connection.prepare(query).unwrap();
+
+    while let Ok(State::Row) = statement.next() {
+        p.insert(statement.read::<String, _>("description").unwrap(), statement.read::<String, _>("endline").unwrap());
+    }
+    p
+}
+
+
+#[get("/time/<project>")]
+fn timeline(project: &str) -> Template {
+    let connection = sqlite::open(format!("{}/{}.db", directory(project), project).as_str()).unwrap();
+    let query = "CREATE TABLE IF NOT EXISTS timeline (description TEXT,endline TEXT);";
+    connection.execute(query).unwrap();
+
+    Template::render("time", TuxTimeline {
+        title: format!("Timeline for {} project", project),
+        projects: timeline_project(project),
+        project: project.to_string(),
+
+    })
+}
+
+#[get("/add-timeline/<project>/<description>/<end>")]
+fn add_timeline(project: &str, description: &str, end: &str) -> Template {
+    let connection = sqlite::open(format!("{}/{}.db", directory(project), project).as_str()).unwrap();
+    let insert = format!("INSERT INTO timeline VALUES ('{}', '{}');", description, end);
+    connection.execute(insert.as_str()).unwrap();
+
+    Template::render("time", TuxTimeline {
+        title: format!("Timeline for {} project", project),
+        projects: timeline_project(project),
+        project: project.to_string(),
     })
 }
 
@@ -306,5 +364,5 @@ fn rocket() -> _ {
             "favicon" => "web/assets/favicon.ico",
             "favicon-png" => "web/assets/favicon-16x16.png",
             "/assets/manifest.json" => "web/assets/manifest.json",
-        )).attach(Template::fairing()).mount("/", routes![favicon, favicon_png,favicon_json]).mount("/", routes![index,css,js,build_project,check_project,doc_project,run_project,test_project,bench_project,update_project,clippy_project,publish_project,install_project,uninstall_project,clean_project,delete_repo,yank_repo,fail_normal,fail_with_version,yank_repo_post,open,test_project_result,bench_project_result,run_project_result,clippy_project_result,print_file,add,add_project])
+        )).attach(Template::fairing()).mount("/", routes![favicon, favicon_png,favicon_json]).mount("/", routes![index,css,js,build_project,check_project,doc_project,run_project,test_project,bench_project,update_project,clippy_project,publish_project,install_project,uninstall_project,clean_project,delete_repo,yank_repo,fail_normal,fail_with_version,yank_repo_post,open,test_project_result,bench_project_result,run_project_result,clippy_project_result,print_file,add,add_project,timeline,add_timeline,clean_timeline])
 }
