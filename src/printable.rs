@@ -1,5 +1,4 @@
-pub mod ji
-{
+pub mod ji {
     use printers::printer::{Job, Printer};
 
     pub struct Impress {
@@ -7,16 +6,14 @@ pub mod ji
     }
 
     impl Impress {
-        pub fn new() -> Impress
-        {
+        pub fn new() -> Impress {
             Self {
                 printers: printers::get_printers(),
             }
         }
 
-        pub fn print(self, filename: &str) -> Job
-        {
-            let p = self.printers.first().expect("failed to fin printer");
+        pub fn print(self, filename: &str) -> Job {
+            let p = self.printers.first().expect("failed to find printer");
             printers::print_file(p, filename)
         }
     }
