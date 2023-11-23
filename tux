@@ -1,16 +1,19 @@
 #!/usr/bin/env bash
 
 DIR="${HOME}/.tux-server"
+
+notify-send "stoping tux service"
+
 systemctl is-active --quiet tux && systemctl stop --user tux
-if [ -d "${DIR}" ];then
-    cd "${DIR}" || exit 1
-    git pull origin master || exit 1
-    "${HOME}"/.cargo/bin/cargo build --release
-    "${HOME}"/.cargo/bin/cargo run --release
+
+if [ -d "${DIR}" ]; then
+  cd "${DIR}" || exit 1
+  notify-send "updating tux" && git pull origin master && notify-send "upate successfully" || exit 1
+  notify-send "rebuiding the application" && "${HOME}"/.cargo/bin/cargo build --release && notify-send "Application updated successfully" || exit 1
+  notify-send "runing the app" && "${HOME}"/.cargo/bin/cargo run --release
 else
-  git clone https://github.com/taishingi/tux.git "${DIR}" && cd "${DIR}" || exit 1
- "${HOME}"/.cargo/bin/cargo build --release || exit 1
- "${HOME}"/.cargo/bin/cargo run --release
+  notify-send "building tux server" && git clone https://github.com/taishingi/tux.git "${DIR}" && cd "${DIR}" || exit 1
+  "${HOME}"/.cargo/bin/cargo build --release || exit 1
+  notify-send "running application"
+  "${HOME}"/.cargo/bin/cargo run --release
 fi
-# shellcheck disable=SC2015
-systemctl is-active --quiet tux && systemctl restart --user tux || systemctl start --user tux

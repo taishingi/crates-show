@@ -2,7 +2,9 @@
 Description=Server web to aniministrate cargo project
 After=network.target
 [Service]
+Environment=TUX_DIR=${TUX_DIR}
+Environment=TUX_EDITOR=${TUX_EDITOR}
 Type=simple
-ExecStart=/usr/bin/tux
+ExecStart=/usr/local/bin/tux
 [Install]
 WantedBy=graphical-session.target
