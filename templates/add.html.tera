@@ -21,7 +21,7 @@
         </form>
     <form action="/clone-repository" method="get">   
     <label for="url-to-clone">
-        <input type="text" placeholder="url to repository" id="url-to-clone">   
+        <input type="text" placeholder="name of the repository" id="url-to-clone">   
     </label>
     <button class="btn-submit" type="submit" id="clone-repository">clone</button>
     </form>
