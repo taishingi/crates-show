@@ -76,8 +76,7 @@ a {
 .flash {
     text-align: center;
     padding: 10px;
-    color: green;
-    border: green;
+    color: var(--darksalmon);
     width: 100%;
 }
 
@@ -164,7 +163,7 @@ h3 {
     color: green;
     text-align: justify;
     position: relative;
-    width: 500px;
+    width: 100%;
     display: flex;
     justify-content: center;
     align-content: center;

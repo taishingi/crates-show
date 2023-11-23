@@ -6,6 +6,19 @@ $(document).ready(function () {
             $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
         });
     });
+
+    $("#clone-repository").on("click",function(e){
+        e.preventDefault();
+        let p = $("#url-to-clone").val();
+
+        if (p == "")
+        {
+            return window.location.replace("/add");
+        }
+        let uri = window.location.protocol + "//" + window.location.host + "/clone/" + p;
+        return window.location.replace(uri);
+    });
+    
     $("#add-project").on("click", function (e) {
         e.preventDefault();
         let p = $("#project-new-name").val();

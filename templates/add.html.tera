@@ -2,12 +2,11 @@
 
 {% block content %}
 <div class="container">
-    <div class="flash-container-clippy">
-        {% if message %}
-        {{message}}
-        {% endif %}
-    </div>
-    <div class="action">
+        <div class="flash-container">
+            {% if message %}
+                <p class="flash">{{ message }}</p>
+            {% endif %}
+        </div>
         <form action="/add-project" method="post">
             <label>
                 <input type="text" id="project-new-name" name="name" placeholder="Name of project" autofocus="autofocus" class="input">
@@ -20,11 +19,17 @@
             </label>
             <button type="submit" id="add-project" class="btn-submit"> create</button>
         </form>
-    </div>
+    <form action="/clone-repository" method="get">   
+    <label for="url-to-clone">
+        <input type="text" placeholder="url to repository" id="url-to-clone">   
+    </label>
+    <button class="btn-submit" type="submit" id="clone-repository">clone</button>
+    </form>
     <div class="action">
         <form action="/" method="get">
             <button type="submit"  value="/" class="btn">home</button>
         </form>
     </div>
 </div>
+
 {% endblock content %}

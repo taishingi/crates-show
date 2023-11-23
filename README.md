@@ -4,7 +4,7 @@
 
 [**Design**](https://www.figma.com/file/LoH2IH17LXFlugXmuuio3o/tux?type=design&node-id=1%3A2&mode=design&t=3ZFpY3ZYs3328J0N-1)
 
-# Installation
+## Installation
 
 ```shell
 rustup default nightly
@@ -16,6 +16,14 @@ echo "set -x TUX_DIR $HOME/RustroverProjects" >> $HOME/.config/fish/config.fish
 
 ```shell
 echo "set -x TUX_EDITOR rustrover" >> $HOME/.config/fish/config.fish
+```
+
+```shell
+echo "set -x TUX_PROVIDER github.com" >> $HOME/.config/fish/config.fish
+```
+
+```shell
+echo "set -x TUX_PROVIDER_USERNAME taishingi" >> $HOME/.config/fish/config.fish
 ```
 
 ```shell
@@ -44,7 +52,7 @@ systemctl start --user tux.service
 http://127.0.0.1:3000
 ```
 
-## Update 
+## Update
 
 ```shell
 systemctl stop --user tux.service
@@ -59,4 +67,3 @@ systemctl start --user tux.service
 ```shell
 cd $HOME/.tux-server
 ```
-
