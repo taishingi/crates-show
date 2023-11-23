@@ -7,6 +7,6 @@ Environment="TUX_EDITOR=code"
 Environment="TUX_PROVIDER_USERNAME=taishingi"
 Environment="TUX_PROVIDER=github.com"
 Type=simple
-ExecStart=/usr/local/bin/tux
+ExecStart=/%h/bin/tux
 [Install]
 WantedBy=default.target
