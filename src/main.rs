@@ -422,12 +422,16 @@ fn add_project(project: &str, t: &str) -> Flash<Redirect> {
 fn clone_project(project: &str) -> Flash<Redirect> {
     match Command::new("git")
         .arg("clone")
-        .arg(format!(
-            "git@{}:{}/{}",
-            std::env::var("TUX_PROVIDER").expect("Failed to fin tux provider"),
-            std::env::var("TUX_PROVIDER_USERNAME").expect("Failed to find tux provider username"),
-            project
-        ).as_str())
+        .arg(
+            format!(
+                "git@{}:{}/{}",
+                std::env::var("TUX_PROVIDER").expect("Failed to fin tux provider"),
+                std::env::var("TUX_PROVIDER_USERNAME")
+                    .expect("Failed to find tux provider username"),
+                project
+            )
+            .as_str(),
+        )
         .arg(project)
         .current_dir(std::env::var("TUX_DIR").expect("failed to find tux dir"))
         .spawn()
@@ -524,6 +528,16 @@ fn css() -> (ContentType, &'static str) {
     )
 }
 
+#[get("/assets/manifest.json")]
+fn render_manifest_json() -> (ContentType, &'static str) {
+    (
+        ContentType::JSON,
+        fs::read_to_string("web/assets/manifest.json")
+            .expect("")
+            .leak(),
+    )
+}
+
 #[get("/assets/js/ji.js")]
 fn js() -> (ContentType, &'static str) {
     (
@@ -541,7 +555,7 @@ fn rocket() -> _ {
             "/assets/manifest.json" => "web/assets/manifest.json",
         ))
         .attach(Template::fairing())
-        .mount("/", routes![favicon, favicon_png, favicon_json])
+        .mount("/", routes![favicon, favicon_png, render_manifest_json])
         .mount(
             "/",
             routes![
