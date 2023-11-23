@@ -11,13 +11,13 @@
     </div>
     <div class="search-container">
         <label for="search"></label><input type="search" name="search" class="search" id="search" placeholder="Search"
-                                           autofocus="autofocus">
+                                            autofocus="autofocus">
 
-    </div>
-    <div class="flash-container">
-        {% if message %}
-        <p class="flash">{{ message }}</p>
-        {% endif %}
+        <div class="flash-container">
+            {% if message %}
+            <p class="flash">{{ message }}</p>
+            {% endif %}
+        </div>
     </div>
     <ul id="myList">
         {% for k, v in projects %}

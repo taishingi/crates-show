@@ -122,10 +122,13 @@ input[type=text], input[type=date], input[type=datetime-local], input[type=searc
 
 
 .flash-container-error {
-    color: darkred;
+    color: white;
     font-weight: bold;
-    background: white;
-    width: calc(var(--container-width) / 2);
+    background-color: transparent;
+    width:100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .flash-container-test {
