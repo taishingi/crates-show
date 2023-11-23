@@ -2,14 +2,8 @@
 
 DIR="${HOME}/.tux-server"
 
-notify-send "stoping tux service"
-
-systemctl is-active --quiet tux && systemctl stop --user tux
-
 if [ -d "${DIR}" ]; then
   cd "${DIR}" || exit 1
-  notify-send "updating tux" && git pull origin master && notify-send "upate successfully" || exit 1
-  notify-send "rebuiding the application" && "${HOME}"/.cargo/bin/cargo build --release && notify-send "Application updated successfully" || exit 1
   notify-send "runing the app" && "${HOME}"/.cargo/bin/cargo run --release
 else
   notify-send "building tux server" && git clone https://github.com/taishingi/tux.git "${DIR}" && cd "${DIR}" || exit 1
