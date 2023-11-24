@@ -15,7 +15,7 @@
 
         <div class="flash-container">
             {% if message %}
-            <p class="flash">{{ message }}</p>
+                <p>{{ message }}</p>
             {% endif %}
         </div>
     </div>

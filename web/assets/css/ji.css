@@ -9,10 +9,13 @@
     --salmon: #1C6693;
     --lightcoral: #0E7AB4;
     --indianred: #008DD5;
+    --babkround: #373F51;
 }
 
 body {
     background-color: var(--lightsalmon);
+    color: white;
+    font-weight: bold;
 }
 
 a {
@@ -73,13 +76,6 @@ a {
     font-weight: bold;
 }
 
-.flash {
-    text-align: center;
-    padding: 10px;
-    color: var(--darksalmon);
-    width: 100%;
-}
-
 .btn-submit {
     width: 100%;
     padding: 12px 20px;
@@ -108,7 +104,11 @@ textarea {
     box-sizing: border-box;
 }
 
-input[type=text], input[type=date], input[type=datetime-local], input[type=search], select {
+input[type=text],
+input[type=date],
+input[type=datetime-local],
+input[type=search],
+select {
     width: 100%;
     padding: 20px 20px;
     margin: 10px 0;
@@ -122,54 +122,24 @@ input[type=text], input[type=date], input[type=datetime-local], input[type=searc
 
 
 .flash-container-error {
-    color: white;
-    font-weight: bold;
     background-color: transparent;
-    width:100%;
+}
+
+.flash-container {
     display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: bold;
+    width: 100%;
+    display: flex;
+    color: var(--salmon);
+    background-color: white;
     align-items: center;
     justify-content: center;
 }
 
-.flash-container-test {
-    color: mediumblue;
-    font-weight: bold;
-    background: white;
-    width: calc(var(--container-width) / 2);
-}
-
 h3 {
     text-align: center;
-}
-
-.flash-container-run {
-    background: white;
-    width: calc(var(--container-width) / 2);
-}
-
-.flash-container-clippy {
-    color: cornflowerblue;
-    font-weight: bold;
-    background: white;
-    width: calc(var(--container-width) / 2);
-}
-
-.flash-container-bench {
-    color: blueviolet;
-    font-weight: bold;
-    background: white;
-    width: calc(var(--container-width) / 2);
-}
-
-.flash-container {
-    background-color: white;
-    color: green;
-    text-align: justify;
-    position: relative;
-    width: 100%;
-    display: flex;
-    justify-content: center;
-    align-content: center;
 }
 
 li {

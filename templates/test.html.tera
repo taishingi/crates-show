@@ -2,11 +2,11 @@
 
 {% block content %}
 <div class="container">
-    <div class="flash-container-test">
+    {% if message %}
         <pre>
             {{message}}
         </pre>
-    </div>
+    {% endif %}
     <div class="action">
         <form action="/" method="get">
             <button type="submit" class="btn"> Return</button>

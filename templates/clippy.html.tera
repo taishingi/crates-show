@@ -2,7 +2,7 @@
 
 {% block content %}
 <div class="container">
-    <div class="flash-container-clippy">
+    <div class="flash-container-error">
         <pre>
             {{message}}
         </pre>

@@ -9,21 +9,22 @@
     </div>
     <div class="flash-container-error">
         {% if errors %}
-        <pre>
-            {{errors}}
-        </pre>
+            <pre class="flash">
+                {{errors}}
+            </pre>
         {% endif %}
     </div>
-    <div class="action">
-        <form action="/" method="get">
-            <button type="submit" class="btn">Return</button>
-        </form>
-        <form action="/{{url}}" method="post">
-            <button type="submit" class="btn">Retry</button>
-        </form>
-        <form action="/open/{{editor}}/{{project}}" method="post">
-            <button type="submit" class="btn">Open</button>
-        </form>
-    </div>
 </div>
+<div class="action">
+    <form action="/" method="get">
+        <button type="submit" class="btn">Return</button>
+    </form>
+    <form action="/{{url}}" method="post">
+        <button type="submit" class="btn">Retry</button>
+    </form>
+    <form action="/open/{{editor}}/{{project}}" method="post">
+        <button type="submit" class="btn">Open</button>
+    </form>
+</div>
+
 {% endblock content %}

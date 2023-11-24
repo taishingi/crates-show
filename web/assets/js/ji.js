@@ -7,18 +7,18 @@ $(document).ready(function () {
         });
     });
 
-    $("#clone-repository").on("click",function(e){
+    $("#clone-repository").on("click", function (e) {
         e.preventDefault();
         let p = $("#url-to-clone").val();
 
-        if (p == "")
-        {
-            return window.location.replace("/add");
+        if (p == "") {
+            let uri = window.location.protocol + "//" + window.location.host + "/add/";
+            return window.location.replace(uri);
         }
         let uri = window.location.protocol + "//" + window.location.host + "/clone/" + p;
         return window.location.replace(uri);
     });
-    
+
     $("#add-project").on("click", function (e) {
         e.preventDefault();
         let p = $("#project-new-name").val();
