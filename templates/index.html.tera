@@ -11,11 +11,11 @@
     </div>
     <div class="search-container">
         <label for="search"></label><input type="search" name="search" class="search" id="search" placeholder="Search"
-                                            autofocus="autofocus">
+            autofocus="autofocus">
 
         <div class="flash-container">
             {% if message %}
-                <p>{{ message }}</p>
+            <p>{{ message }}</p>
             {% endif %}
         </div>
     </div>
@@ -26,8 +26,11 @@
                 <div class="card">
                     <div class="card-title">
                         <h2 class="title">{{k}}</h2>
+
                     </div>
+
                     <div class="action">
+
                         <form action="/build/{{k}}" method="post">
                             <button class="btn" type="submit">build</button>
                         </form>
@@ -89,9 +92,11 @@
                         <form action="/open/{{editor}}/{{k}}" method="post">
                             <button type="submit" class="btn"> Open</button>
                         </form>
-
                     </div>
                     <div class="action">
+                        <form action="https://crates.io/crates/{{k}}" method="get">
+                            <button type="submit" class="btn">crates.io</button>
+                        </form>
                         <form action="/time/{{k}}" method="get">
                             <button type="submit" class="btn"> timeline</button>
                         </form>
