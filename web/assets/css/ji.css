@@ -1,260 +1,86 @@
-@import url('https://fonts.googleapis.com/css2?family=Jost:wght@200;300;400&display=swap');
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+@tailwind variants;
 
-:root {
-    --container-padding: 20%;
-    --container-width: calc(100% - var(--container-padding) * 2);
-    --container-max-width: 80%;
-    --lightsalmon: #373F51;
-    --darksalmon: #2A5372;
-    --salmon: #1C6693;
-    --lightcoral: #0E7AB4;
-    --indianred: #008DD5;
-    --babkround: #373F51;
+.canvas .closebtn {
+    position: absolute;
+    top: 0;
+    right: 25px;
+    font-size: 36px;
+    margin-left: 50px;
 }
 
-body {
-    background-color: var(--lightsalmon);
-    color: white;
-    font-weight: bold;
-}
-
-a {
-    text-decoration: none;
-}
-
-.container {
-    width: var(--container-width);
-    max-width: var(--container-max-width);
-    margin-left: auto;
-    margin-right: auto;
-}
-
-.badges {
-    margin-top: 25px;
-    display: flex;
-    justify-content: center;
-    align-content: center;
-    column-gap: 5px;
-}
-
-.space {
-    text-align: center;
-    margin: 5%;
-}
-
-.card {
-    width: 700px;
-    border-radius: 50px;
-    background-color: var(--darksalmon);
-    border: 10px var(--indianred);
-    border-bottom-style: solid;
-    padding-bottom: 10%;
-}
-
-.search-container {
-    width: 500px;
-}
-
-.action {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-.btn {
-    width: 150px;
-    text-transform: uppercase;
-    text-align: center;
-    height: 86px;
-    border: 5px var(--indianred);
-    border-bottom-style: solid;
-    border-radius: 25px;
-    background: white;
-    padding: 20px;
-    margin: 20px;
-    color: var(--salmon);
-    font-weight: bold;
-}
-
-.btn-submit {
-    width: 100%;
-    padding: 12px 20px;
-    margin: 8px 0;
-    text-transform: uppercase;
-    text-align: center;
-    height: 86px;
-    border: 5px var(--indianred);
-    border-bottom-style: solid;
-    border-radius: 25px;
-    background: white;
-    color: var(--salmon);
-    font-weight: bold;
-}
-
-.btn-submit:hover {
-    cursor: pointer;
-}
-
-textarea {
-    border: var(--indianred);
-    outline: var(--indianred);
-    border-radius: 4px;
-    width: 100%;
-    display: inline-block;
-    box-sizing: border-box;
-}
-
-input[type=text],
-input[type=date],
-input[type=datetime-local],
-input[type=search],
-select {
-    width: 100%;
-    padding: 20px 20px;
-    margin: 10px 0;
-    color: var(--salmon);
-    border: var(--indianred);
-    outline: var(--indianred);
-    display: inline-block;
-    border-radius: 4px;
-    box-sizing: border-box;
-}
-
-
-.flash-container-error {
+::-webkit-scrollbar {
     background-color: transparent;
+    width: 10px;
 }
 
-.flash-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-weight: bold;
-    width: 100%;
-    display: flex;
-    color: var(--salmon);
-    background-color: white;
-    align-items: center;
-    justify-content: center;
+::-webkit-scrollbar-thumb {
+    background-color: rgba(233, 80, 80, 0.873);
+    border-radius: 20px;
 }
 
-h3 {
-    text-align: center;
+::-webkit-scrollbar-corner {
+    border-radius: 20px;
 }
 
-li {
-    list-style: none;
-}
+@layer components {
 
-input[type=search] {
-    transition: width 0.4s ease-in-out;
-}
-
-input[type=search]:focus {
-    outline: none;
-}
-
-.card-title {
-    margin-top: 100px;
-    display: flex;
-    align-content: center;
-    justify-content: center;
-    text-transform: uppercase;
-    color: white;
-    font-weight: bold;
-}
-
-.btn:hover {
-    width: 150px;
-    text-transform: uppercase;
-    height: 86px;
-    cursor: pointer;
-    padding: 20px;
-    margin: 20px;
-    border: 5px var(--indianred);
-    border-bottom-style: solid;
-    border-radius: 25px;
-    background: var(--salmon);
-    color: white;
-    font-weight: bold;
-}
-
-
-.design-section {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    min-height: 100vh;
-    font-family: Jost, serif;
-}
-
-.design {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.timeline {
-    width: 80%;
-    height: auto;
-    max-width: 800px;
-    margin: 0 auto;
-    display: flex;
-    flex-direction: column;
-}
-
-
-.timeline-content {
-    padding: 10px;
-    background: var(--salmon);
-    border: 5px white;
-    color: white;
-    text-align: justify;
-    transition: 0.4s ease;
-    overflow-wrap: break-word !important;
-    margin: 1rem 1rem 20px;
-    border-radius: 6px;
-}
-
-
-.timeline-component {
-    margin: 0 20px 20px 20px;
-}
-
-@media screen and (min-width: 768px) {
-    .timeline {
-        display: grid;
-        grid-template-columns: 1fr 3px 1fr;
+    .card {
+        @apply bg-white rounded-xl w-full
     }
 
-    .timeline-middle {
-        position: relative;
-        background-color: var(--lightcoral);
-        width: 3px;
-        height: 100%;
+    .thumb {
+        @apply rounded-xl
     }
 
-    .main-middle {
-        opacity: 0;
+    .readme {
+        @apply text-white mb-10
     }
 
-    .timeline-circle {
-        position: absolute;
-        top: 0;
-        left: 50%;
-        width: 15px;
-        height: 15px;
-        border-radius: 50%;
-        background-color: var(--salmon);
-        -webkit-transform: translateX(-50%);
-        transform: translateX(-50%);
+    .project-readme a {
+        @apply text-red-500 font-bold
     }
-}
+
+    .project-readme img {
+        @apply border-white border-4
+    }
+
+    .project-readme h2, .project-readme h3 {
+        @apply uppercase text-center text-white font-bold
+    }
 
 
-@media only screen and (min-width: 1040px) {
-    :root {
-        --container-width: 1000px;
+    .project-readme code {
+        @apply text-red-400 font-semibold
+    }
+
+    .project-title {
+        @apply uppercase text-white font-bold text-center mt-5 mb-5
+    }
+
+    .card-action {
+        @apply grid grid-cols-3 gap-5 p-4 mb-5
+    }
+
+    .hide {
+        @apply hidden
+    }
+
+    .show {
+        @apply block
+    }
+
+    .projects {
+        @apply block
+    }
+
+    .search {
+        @apply bg-transparent w-full focus:border-4 focus:border-white focus:placeholder:text-white focus:text-white rounded-lg border-white border-4
+    }
+
+    .btn {
+        @apply p-5 block bg-transparent text-center font-bold border-b-2 border-b-red-400 rounded-xl text-white w-full
     }
 }

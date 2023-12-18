@@ -1,109 +1,14 @@
 {% extends "base" %}
 
 {% block content %}
-<div class="design-section">
-    <div class="action">
-        <div>
-            <form action="/add" method="get">
-                <button class="btn" type="submit"> add</button>
-            </form>
-        </div>
-    </div>
-    <div class="search-container">
-        <label for="search"></label><input type="search" name="search" class="search" id="search" placeholder="Search"
-            autofocus="autofocus">
+<div class="others">
+    <label for="search"></label><input type="search" name="search" class="search" id="search"
+        placeholder="Search a project">
 
-        <div class="flash-container">
-            {% if message %}
-            <p>{{ message }}</p>
-            {% endif %}
-        </div>
-    </div>
-    <ul id="myList">
+
+    <ul id="myList" class="columns-2">
         {% for k, v in projects %}
-        <li>
-            <div id="{{k}}">
-                <div class="card">
-                    <div class="card-title">
-                        <h2 class="title">{{k}}</h2>
-
-                    </div>
-
-                    <div class="action">
-
-                        <form action="/build/{{k}}" method="post">
-                            <button class="btn" type="submit">build</button>
-                        </form>
-                        <form action="/check/{{k}}" method="post">
-                            <button class="btn" type="submit"> check</button>
-                        </form>
-                        <form action="/clean/{{k}}" method="post">
-                            <button class="btn" type="submit">clean</button>
-                        </form>
-                    </div>
-                    <div class="action">
-                        <form action="/doc/{{k}}" method="post">
-                            <button class="btn" type="submit">doc</button>
-                        </form>
-                        <form action="/run/{{k}}" method="post">
-                            <button class="btn" type="submit">run</button>
-                        </form>
-                        <form action="/test/{{k}}" method="post">
-                            <button class="btn" type="submit">test</button>
-                        </form>
-                    </div>
-                    <div class="action">
-                        <form action="/bench/{{k}}" method="post">
-                            <button class="btn" type="submit">bench</button>
-                        </form>
-                        <form action="/update/{{k}}" method="post">
-                            <button class="btn" type="submit">update</button>
-                        </form>
-                        <form action="/clippy/{{k}}" method="post">
-                            <button class="btn" type="submit">clippy</button>
-                        </form>
-                    </div>
-                    <div class="action">
-                        <form action="/publish/{{k}}" method="post">
-                            <button class="btn" type="submit"> publish</button>
-                        </form>
-                        <form action="/install/{{k}}" method="post">
-                            <button class="btn" type="submit">install</button>
-                        </form>
-                        <form action="/uninstall/{{k}}" method="post">
-                            <button class="btn" type="submit">uninstall</button>
-                        </form>
-                    </div>
-                    <div class="badges">
-                        <img alt="Crates.io" src="https://img.shields.io/crates/d/{{k}}">
-                        <img alt="Crates.io (recent)" src="https://img.shields.io/crates/dr/{{k}}">
-                        <img alt="Crates.io" src="https://img.shields.io/crates/v/{{k}}">
-                        <img alt="docs.rs" src="https://img.shields.io/docsrs/{{k}}">
-                        <img alt="Crates.io" src="https://img.shields.io/crates/l/{{k}}">
-                    </div>
-                    <div class="action">
-                        <form action="/delete-repo/{{k}}" method="post">
-                            <button class="btn confirm-delete" type="submit" repo="{{v}}"> remove
-                            </button>
-                        </form>
-                        <form action="/yank-repo/{{k}}" method="post">
-                            <button class="btn confirm-yank" type="submit" repo="{{k}}">yank</button>
-                        </form>
-                        <form action="/open/{{editor}}/{{k}}" method="post">
-                            <button type="submit" class="btn"> Open</button>
-                        </form>
-                    </div>
-                    <div class="action">
-                        <form action="https://crates.io/crates/{{k}}" method="get">
-                            <button type="submit" class="btn">crates.io</button>
-                        </form>
-                        <form action="/time/{{k}}" method="get">
-                            <button type="submit" class="btn"> timeline</button>
-                        </form>
-                    </div>
-                </div>
-            </div>
-        </li>
+        <li><a href="/manage/{{k}}" class="btn">{{k}}</a></li>
         {% endfor %}
     </ul>
 </div>

@@ -1,10 +1,7 @@
-use std::collections::HashMap;
-use std::fs;
-use std::ops::Add;
-use std::process::Command;
-use std::string::String;
-
+use crate::administrate::ji::Admin;
+use crate::printable::ji::Impress;
 use printers::printer::JobStatus;
+use rocket::fs::NamedFile;
 use rocket::http::ContentType;
 use rocket::request::FlashMessage;
 use rocket::response::{Flash, Redirect};
@@ -14,9 +11,13 @@ use rocket_dyn_templates::Template;
 use rocket_include_static_resources::{static_resources_initializer, static_response_handler};
 use scan_dir::ScanDir;
 use sqlite::State;
-
-use crate::administrate::ji::Admin;
-use crate::printable::ji::Impress;
+use std::collections::HashMap;
+use std::fs::{self};
+use std::ops::Add;
+use std::path::Path;
+use std::process::Command;
+use std::str;
+use std::string::String;
 
 mod administrate;
 mod printable;
@@ -28,6 +29,25 @@ struct Tux {
     title: String,
     project: String,
     message: Option<String>,
+    projects: HashMap<String, String>,
+}
+#[derive(Serialize, Deserialize)]
+struct TuxRun {
+    url: String,
+    editor: String,
+    title: String,
+    project: String,
+    message: String,
+    projects: HashMap<String, String>,
+    log: String,
+}
+
+#[derive(Serialize, Deserialize)]
+struct TuxManage {
+    editor: String,
+    title: String,
+    project: String,
+    readme: String,
     projects: HashMap<String, String>,
 }
 
@@ -56,14 +76,25 @@ fn directory(x: &str) -> String {
     format!("{}/{}", std::env::var("TUX_DIR").expect(""), x)
 }
 
-#[post("/build/<project>")]
-fn build_project(project: &str) -> Flash<Redirect> {
-    Admin::new(directory(project).as_str()).run(
-        vec!["build".to_string()],
-        format!("{} has been built successfully", project).as_str(),
-        project,
+#[get("/build/<project>")]
+fn build_project(project: &str) -> Template {
+    let msg: String = match Admin::new(directory(project).as_str()).run(vec!["build".to_string()]) {
+        true => format!("The project {} has been built successfully", project),
+        false => format!("Failed to build the {} project", project),
+    };
+
+    let debug = fs::read_to_string("output.txt").expect("msg");
+    Template::render(
         "build",
-        "",
+        TuxRun {
+            url: String::new().add("/build/").add(project),
+            editor: editor(),
+            title: format!("Build - {}", project),
+            project: project.to_string(),
+            message: msg,
+            projects: projects(),
+            log: debug,
+        },
     )
 }
 
@@ -91,230 +122,312 @@ fn clean_timeline(project: &str) -> Flash<Redirect> {
     )
 }
 
-#[post("/check/<project>")]
-fn check_project(project: &str) -> Flash<Redirect> {
-    Admin::new(directory(project).as_str()).run(
-        vec!["check".to_string()],
-        format!("{} has been checked successfully", project).as_str(),
-        project,
+#[get("/check/<project>")]
+fn check_project(project: &str) -> Template {
+    let msg: String = match Admin::new(directory(project).as_str()).run(vec!["check".to_string()]) {
+        true => format!("The project {} has been checked successfully", project),
+        false => format!("Failed to check the {} project", project),
+    };
+
+    let debug = fs::read_to_string("output.txt").expect("msg");
+    Template::render(
         "check",
-        "",
+        TuxRun {
+            url: String::new().add("/check/").add(project),
+            editor: editor(),
+            title: format!("Check - {} ", project),
+            project: project.to_string(),
+            message: msg,
+            projects: projects(),
+            log: debug,
+        },
     )
 }
 
-#[post("/clean/<project>")]
-fn clean_project(project: &str) -> Flash<Redirect> {
-    Admin::new(directory(project).as_str()).run(
-        vec!["clean".to_string()],
-        format!("{} has been cleaned successfully", project).as_str(),
-        project,
+#[get("/clean/<project>")]
+fn clean_project(project: &str) -> Template {
+    let msg: String = match Admin::new(directory(project).as_str()).run(vec!["clean".to_string()]) {
+        true => format!("The project {} has been cleaned successfully", project),
+        false => format!("Failed to clean the {} project", project),
+    };
+
+    let debug = fs::read_to_string("output.txt").expect("msg");
+    Template::render(
         "clean",
-        "",
+        TuxRun {
+            url: String::new().add("/clean/").add(project),
+            editor: editor(),
+            title: format!("Clean - {}", project),
+            project: project.to_string(),
+            message: msg,
+            projects: projects(),
+            log: debug,
+        },
     )
 }
 
-#[post("/doc/<project>")]
-fn doc_project(project: &str) -> Flash<Redirect> {
-    Admin::new(directory(project).as_str()).run(
-        vec!["doc".to_string(), "--open".to_string()],
-        format!("{} has been documented successfully", project).as_str(),
-        project,
+#[get("/doc/<project>")]
+fn doc_project(project: &str) -> Template {
+    let msg: String = match Admin::new(directory(project).as_str()).run(vec!["doc".to_string()]) {
+        true => format!("The project {} has been documented successfully", project),
+        false => format!("Failed to build documentation for the {} project", project),
+    };
+
+    let debug = fs::read_to_string("output.txt").expect("msg");
+    Template::render(
         "doc",
-        "",
-    )
-}
-
-#[get("/show-test/<project>")]
-fn test_project_result(project: &str, flash: Option<FlashMessage>) -> Template {
-    Template::render(
-        "test",
-        Tux {
-            title: format!("{} test results", project).to_string(),
+        TuxRun {
+            url: String::new().add("/doc/").add(project),
+            editor: editor(),
+            title: format!("Documentation - {}", project),
             project: project.to_string(),
-            message: flash.map(|flash| flash.message().to_string()),
-            projects: HashMap::new(),
-            url: String::new().add("/show-test").add("/").add(project),
-            editor: std::env::var("TUX_EDITOR").expect("Failed to get tux editor preferences"),
+            message: msg,
+            projects: projects(),
+            log: debug,
         },
     )
 }
 
-#[get("/show-bench/<project>")]
-fn bench_project_result(project: &str, flash: Option<FlashMessage>) -> Template {
+#[get("/bench/<project>")]
+fn bench_project(project: &str) -> Template {
+    let msg: String = match Admin::new(directory(project).as_str()).run(vec!["bench".to_string()]) {
+        true => format!("The project {} has been documented successfully", project),
+        false => format!("Failed to build documentation for the {} project", project),
+    };
+
+    let debug = fs::read_to_string("output.txt").expect("msg");
     Template::render(
         "bench",
-        Tux {
-            title: format!("{} bench results", project).to_string(),
+        TuxRun {
+            url: String::new().add("/bench/").add(project),
+            editor: editor(),
+            title: format!("Bench - {}", project),
             project: project.to_string(),
-            message: flash.map(|flash| flash.message().to_string()),
-            projects: HashMap::new(),
-            url: String::new().add("/show-bench").add("/").add(project),
-            editor: std::env::var("TUX_EDITOR").expect("failed to get tux editor preferences"),
+            message: msg,
+            projects: projects(),
+            log: debug,
         },
     )
 }
 
-#[get("/show-run/<project>")]
-fn run_project_result(project: &str, flash: Option<FlashMessage>) -> Template {
-    Template::render(
-        "run",
-        Tux {
-            title: format!("{} run results", project).to_string(),
-            project: project.to_string(),
-            message: flash.map(|flash| flash.message().to_string()),
-            projects: HashMap::new(),
-            url: String::new().add("/show-run").add("/").add(project),
-            editor: std::env::var("TUX_EDITOR").expect("failed to get tux editor preferences"),
-        },
-    )
-}
+#[get("/clippy/<project>")]
+fn clippy_project(project: &str) -> Template {
+    let msg: String = match Admin::new(directory(project).as_str()).run(vec!["clippy".to_string()])
+    {
+        true => format!("The project {} has been checked successfully", project),
+        false => format!("Failure founded for the {} project", project),
+    };
 
-#[get("/show-clippy/<project>")]
-fn clippy_project_result(project: &str, flash: Option<FlashMessage>) -> Template {
+    let debug = fs::read_to_string("output.txt").expect("msg");
     Template::render(
         "clippy",
-        Tux {
-            title: format!("{} clippy results", project).to_string(),
+        TuxRun {
+            url: String::new().add("/clippy/").add(project),
+            editor: editor(),
+            title: format!("Clippy - {}", project),
             project: project.to_string(),
-            message: flash.map(|flash| flash.message().to_string()),
-            projects: HashMap::new(),
-            url: String::new().add("/show-clippy").add("/").add(project),
-            editor: std::env::var("TUX_EDITOR").expect("failed to get tux editor preferences"),
+            message: msg,
+            projects: projects(),
+            log: debug,
         },
     )
 }
 
-#[post("/run/<project>")]
-fn run_project(project: &str) -> Flash<Redirect> {
-    Admin::new(directory(project).as_str()).run(
-        vec!["run".to_string()],
-        format!("{} has been launched successfully", project).as_str(),
-        project,
+#[get("/run/<project>")]
+fn run_project(project: &str) -> Template {
+    let msg: String = match Admin::new(directory(project).as_str()).run(vec!["run".to_string()]) {
+        true => format!("The project {} has runned successfully", project),
+        false => format!("Failed to run the {} project", project),
+    };
+
+    let debug = fs::read_to_string("output.txt").expect("msg");
+    Template::render(
         "run",
-        "",
+        TuxRun {
+            url: String::new().add("/run/").add(project),
+            editor: editor(),
+            title: format!("Run - {}", project),
+            project: project.to_string(),
+            message: msg,
+            projects: projects(),
+            log: debug,
+        },
     )
 }
 
-#[post("/test/<project>")]
-fn test_project(project: &str) -> Flash<Redirect> {
-    Admin::new(directory(project).as_str()).run(
-        vec!["test".to_string()],
-        format!("{} no errors detected", project).as_str(),
-        project,
+#[get("/test/<project>")]
+fn test_project(project: &str) -> Template {
+    let msg: String = match Admin::new(directory(project).as_str()).run(vec!["test".to_string()]) {
+        true => format!("Test passes for the {} project", project),
+        false => format!("Failure for the {} project", project),
+    };
+
+    let debug = fs::read_to_string("output.txt").expect("msg");
+    Template::render(
         "test",
-        "",
+        TuxRun {
+            url: String::new().add("/test/").add(project),
+            editor: editor(),
+            title: format!("Test - {}", project),
+            project: project.to_string(),
+            message: msg,
+            projects: projects(),
+            log: debug,
+        },
     )
 }
 
-#[post("/bench/<project>")]
-fn bench_project(project: &str) -> Flash<Redirect> {
-    Admin::new(directory(project).as_str()).run(
-        vec!["bench".to_string()],
-        format!("{} bench no error detected", project).as_str(),
-        project,
-        "bench",
-        "",
-    )
-}
+#[get("/update/<project>")]
+fn update_project(project: &str) -> Template {
+    let msg: String = match Admin::new(directory(project).as_str()).run(vec!["update".to_string()])
+    {
+        true => format!("The project {} has been updated succcessfully", project),
+        false => format!("Failed to update the {} project", project),
+    };
 
-#[post("/update/<project>")]
-fn update_project(project: &str) -> Flash<Redirect> {
-    Admin::new(directory(project).as_str()).run(
-        vec!["update".to_string()],
-        format!("{} has been updated successfully", project).as_str(),
-        project,
+    let debug = fs::read_to_string("output.txt").expect("msg");
+    Template::render(
         "update",
-        "",
+        TuxRun {
+            url: String::new().add("/update/").add(project),
+            editor: editor(),
+            title: format!("Update - {}", project),
+            project: project.to_string(),
+            message: msg,
+            projects: projects(),
+            log: debug,
+        },
     )
 }
 
-#[post("/clippy/<project>")]
-fn clippy_project(project: &str) -> Flash<Redirect> {
-    Admin::new(directory(project).as_str()).run(
-        vec!["clippy".to_string()],
-        format!("{} clippy no errors detected by clippy", project).as_str(),
-        project,
-        "clippy",
-        "",
-    )
-}
+#[get("/publish/<project>")]
+fn publish_project(project: &str) -> Template {
+    let msg: String = match Admin::new(directory(project).as_str()).run(vec!["publish".to_string()])
+    {
+        true => format!(
+            "The project has been published successfully at https://crates.io/creates/{}",
+            project
+        ),
+        false => format!("Failed to publish the {} project", project),
+    };
 
-#[post("/publish/<project>")]
-fn publish_project(project: &str) -> Flash<Redirect> {
-    Admin::new(directory(project).as_str()).run(
-        vec!["publish".to_string()],
-        format!("{} published successfully", project).as_str(),
-        project,
+    let debug = fs::read_to_string("output.txt").expect("msg");
+    Template::render(
         "publish",
-        "",
+        TuxRun {
+            url: String::new().add("/publish/").add(project),
+            editor: editor(),
+            title: format!("Publish - {}", project),
+            project: project.to_string(),
+            message: msg,
+            projects: projects(),
+            log: debug,
+        },
     )
 }
 
-#[post("/install/<project>")]
-fn install_project(project: &str) -> Flash<Redirect> {
-    Admin::new(directory(format!("{}/.cargo/bin", env!("HOME")).as_str()).as_str()).run(
-        vec!["install".to_string()],
-        format!("{} has been installed successfully", project).as_str(),
-        project,
-        "install",
-        "",
-    )
-}
+#[get("/uninstall/<project>")]
+fn uninstall_project(project: &str) -> Template {
+    let msg: String = match Admin::new(directory(project).as_str())
+        .run(vec!["uninstall".to_string(), "--path".to_string()])
+    {
+        true => format!("The project {} has been uninstalled successfully", project),
+        false => format!("Failed to uninstall the {} project", project),
+    };
 
-#[post("/uninstall/<project>")]
-fn uninstall_project(project: &str) -> Flash<Redirect> {
-    Admin::new(format!("{}/.cargo/bin", env!("HOME")).as_str()).run(
-        vec!["uninstall".to_string()],
-        format!("{} has been uninstall successfully", project).as_str(),
-        project,
+    let debug = fs::read_to_string("output.txt").expect("msg");
+    Template::render(
         "uninstall",
-        "",
+        TuxRun {
+            url: String::new().add("/uninstall/").add(project),
+            editor: editor(),
+            title: format!("Uninstall - {}", project),
+            project: project.to_string(),
+            message: msg,
+            projects: projects(),
+            log: debug,
+        },
     )
 }
 
-#[post("/delete-repo/<project>")]
-fn delete_repo(project: &str) -> Flash<Redirect> {
+#[get("/install/<project>")]
+fn install_project(project: &str) -> Template {
+    let msg: String = match Admin::new(directory(project).as_str())
+        .run(vec!["install".to_string(), "--path".to_string()])
+    {
+        true => format!("The project {} has been installed successfully", project),
+        false => format!("Failed to install the {} project", project),
+    };
+
+    let debug = fs::read_to_string("output.txt").expect("msg");
+    Template::render(
+        "install",
+        TuxRun {
+            url: String::new().add("/uninstall/").add(project),
+            editor: editor(),
+            title: format!("Install - {}", project),
+            project: project.to_string(),
+            message: msg,
+            projects: projects(),
+            log: debug,
+        },
+    )
+}
+
+#[get("/remove/<project>")]
+fn delete_repo(project: &str) -> Template {
     fs::remove_dir_all(directory(project).as_str()).expect("failed to remove the directory");
-    Flash::success(
-        Redirect::to("/"),
-        format!("{} has been deleted successfully", project),
+    let msg: String = match Path::new(directory(project).as_str()).exists() {
+        true => format!("The {} project has been removed successfully", project),
+        false => format!("Failed to remove the {} project", project),
+    };
+
+    Template::render(
+        "remove",
+        TuxRun {
+            url: String::new().add("/"),
+            editor: editor(),
+            title: format!("Removed - {}", project),
+            project: project.to_string(),
+            message: msg,
+            projects: projects(),
+            log: "".to_string(),
+        },
     )
 }
 
 #[get("/yank/<project>/<version>")]
-fn yank_repo(project: &str, version: &str) -> Flash<Redirect> {
+fn yank_repo(project: &str, version: &str) -> Template {
     let repo = String::new().add(project).add("@").add(version);
-    Admin::new(directory(project).as_str()).run(
-        vec!["yank".to_string(), repo],
-        format!(
-            "The project {} version {} has been yanked successfully",
-            project, version
-        )
-        .as_str(),
-        project,
+    let msg: String =
+        match Admin::new(directory(project).as_str()).run(vec!["yank".to_string(), repo]) {
+            true => format!(
+                "The project has been yanked successfully at https://crates.io/creates/{}",
+                project
+            ),
+            false => format!("Failed to yanked the {} project", project),
+        };
+
+    let debug = fs::read_to_string("output.txt").expect("msg");
+    Template::render(
         "yank",
-        version,
+        TuxRun {
+            url: String::new()
+                .add("/yank/")
+                .add(project)
+                .add("/")
+                .add(version),
+            editor: editor(),
+            title: format!("Yanked - {}", project),
+            project: project.to_string(),
+            message: msg,
+            projects: projects(),
+            log: debug,
+        },
     )
 }
 
-#[post("/yank/<project>/<version>")]
-fn yank_repo_post(project: &str, version: &str) -> Flash<Redirect> {
-    let repo = String::new().add(project).add("@").add(version);
-    Admin::new(directory(project).as_str()).run(
-        vec!["yank".to_string(), repo],
-        format!(
-            "The project {} version {} has been yanked successfully",
-            project, version
-        )
-        .as_str(),
-        project,
-        "yank",
-        version,
-    )
-}
-
-#[get("/")]
-fn index(flash: Option<FlashMessage>) -> Template {
+fn projects() -> HashMap<std::string::String, std::string::String> {
     let project_dir = std::env::var("TUX_DIR").expect("failed to find TUX_DIR variable path");
     let mut projects: HashMap<String, String> = HashMap::new();
     ScanDir::dirs()
@@ -325,13 +438,17 @@ fn index(flash: Option<FlashMessage>) -> Template {
             }
         })
         .unwrap();
+    projects
+}
 
+#[get("/")]
+fn index(flash: Option<FlashMessage>) -> Template {
     Template::render(
         "index",
         Tux {
             title: "Tux".to_string(),
             message: flash.map(|flash| flash.message().to_string()),
-            projects,
+            projects: projects(),
             project: "".to_string(),
             url: "".to_string(),
             editor: std::env::var("TUX_EDITOR").expect("failed to get tux editor preferences"),
@@ -348,25 +465,6 @@ fn open(editor: &str, project: &str) -> Flash<Redirect> {
     Flash::success(
         Redirect::to("/"),
         format!("The {} project or has been opened", project).as_str(),
-    )
-}
-
-#[get("/fail/<task>/<project>/<version>")]
-fn fail_with_version(task: &str, project: &str, version: &str) -> Template {
-    Template::render(
-        "fail",
-        TuxFailure {
-            title: "Tux failed".to_string(),
-            project: project.to_string(),
-            errors: fs::read_to_string("./logs.txt").expect("failed to parse file"),
-            url: String::new()
-                .add(task)
-                .add("/")
-                .add(project)
-                .add("/")
-                .add(version),
-            editor: std::env::var("TUX_EDITOR").expect("failed to get tux editor preferences"),
-        },
     )
 }
 
@@ -518,11 +616,38 @@ fn add_timeline(project: &str, description: &str, end: &str) -> Template {
     )
 }
 
-#[get("/assets/css/ji.css")]
+fn editor() -> String {
+    std::env::var("TUX_EDITOR").expect("failed to get tux editor preferences")
+}
+
+#[get("/manage/<project>")]
+fn manage(project: &str) -> Template {
+    Template::render(
+        "manage",
+        TuxManage {
+            title: format!("Manage {}", project),
+            project: project.to_string(),
+            projects: projects(),
+            editor: editor(),
+            readme: readme(&directory(project)),
+        },
+    )
+}
+
+#[get("/web/assets/img/rust-mascot.png")]
+async fn rust_img() -> NamedFile {
+    NamedFile::open(Path::new("web/assets/img/rust-mascot.png"))
+        .await
+        .expect("msg")
+}
+fn readme(p: &str) -> String {
+    markdown::file_to_html(Path::new(format!("{}/README.md", p).as_str())).expect("msg")
+}
+#[get("/assets/css/app.css")]
 fn css() -> (ContentType, &'static str) {
     (
         ContentType::CSS,
-        fs::read_to_string("web/assets/css/ji.css")
+        fs::read_to_string("web/assets/css/app.css")
             .expect("")
             .leak(),
     )
@@ -562,35 +687,31 @@ fn rocket() -> _ {
                 index,
                 css,
                 js,
+                run_project,
                 build_project,
                 check_project,
                 doc_project,
-                run_project,
                 test_project,
                 bench_project,
                 update_project,
                 clippy_project,
                 publish_project,
-                install_project,
                 uninstall_project,
                 clean_project,
                 delete_repo,
                 yank_repo,
                 fail_normal,
-                fail_with_version,
-                yank_repo_post,
                 open,
-                test_project_result,
-                bench_project_result,
-                run_project_result,
-                clippy_project_result,
                 print_file,
                 add,
                 add_project,
                 timeline,
                 add_timeline,
+                install_project,
                 clean_timeline,
-                clone_project
+                clone_project,
+                rust_img,
+                manage,
             ],
         )
 }

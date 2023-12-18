@@ -7,3 +7,6 @@ Cargo.lock
 *.dbcontinuous/
 .icon/
 continuous/
+node_modules/
+tux.db
+package-lock.json
