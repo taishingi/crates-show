@@ -4,8 +4,6 @@
 <div class="others">
     <label for="search"></label><input type="search" name="search" class="search" id="search"
         placeholder="Search a project">
-
-
     <ul id="myList" class="columns-2">
         {% for k, v in projects %}
         <li><a href="/manage/{{k}}" class="btn">{{k}}</a></li>

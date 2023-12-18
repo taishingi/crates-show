@@ -1,22 +1,48 @@
 {% extends "base" %}
 
 {% block content %}
-<div class="container">
-    <div class="flash-container">
-        <pre>
-            {{message}}
-        </pre>
+<div class="project-message">
+    {{message}}
+</div>
+<pre class="project-log">
+    {{log}}
+</pre>
+<div class="project">
+    <h1 class="project-title"> {{project}}</h1>
+    <div class="columns-4">
+        <img src="https://img.shields.io/crates/d/{{project}}?style=flat-square&color=success" alt="download">
+        <img src="https://img.shields.io/docsrs/{{project}}?style=flat-square&color=success" alt="docs">
+        <img src="https://img.shields.io/crates/l/{{project}}?style=flat-square&color=success" alt="licence">
+        <img src="https://img.shields.io/crates/v/{{project}}?style=flat-square&color=success" alt="version">
     </div>
-    <div class="action">
-        <form action="/" method="get">
-            <button type="submit" class="btn"> Return</button>
-        </form>
-        <form action="/run/{{project}}" method="post">
-            <button type="submit" class="btn"> Retry</button>
-        </form>
-        <form action="/open/{{editor}}/{{project}}" method="post">
-            <button type="submit" class="btn"> Open editor</button>
-        </form>
-    </div>
+    <label for="search-action"></label><input type="search" name="search-action" class="search" id="search-action"
+        placeholder="Search a action" autofocus="autofocus">
+    <ul id="action" class="columns-2">
+        <li><a href="/build/{{project}}" class="btn">build</a></li>
+        <li><a href="/check/{{project}}" class="btn">check</a></li>
+        <li><a href="/clean/{{project}}" class="btn">clean</a></li>
+        <li><a href="/doc/{{project}}" class="btn">doc</a></li>
+        <li><a href="/run/{{project}}" class="btn">run</a></li>
+        <li><a href="/test/{{project}}" class="btn">test</a></li>
+        <li><a href="/bench/{{project}}" class="btn">bench</a></li>
+        <li><a href="/update/{{project}}" class="btn">update</a></li>
+        <li><a href="/clippy/{{project}}" class="btn">clippy</a></li>
+        <li><a href="/publish/{{project}}" class="btn">publish</a></li>
+        <li><a href="/install/{{project}}" class="btn">install</a></li>
+        <li><a href="/uninstall/{{project}}" class="btn">uninstall</a></li>
+        <li><a href="/yank/{{project}}" class="btn">yank</a></li>
+        <li><a href="/delete/{{project}}" class="btn">delete</a></li>
+        <li><a href="/time/{{project}}" class="btn">timeline</a></li>
+        <li><a href="https://crates.io/crates/{{project}}" class="btn">crates.io</a></li>
+    </ul>
+</div>
+<div class="others">
+    <label for="search"></label><input type="search" name="search" class="search" id="search"
+        placeholder="Search a project">
+    <ul id="myList" class="columns-2">
+        {% for k, v in projects %}
+        <li><a href="/manage/{{k}}" class="btn">{{k}}</a></li>
+        {% endfor %}
+    </ul>
 </div>
 {% endblock content %}

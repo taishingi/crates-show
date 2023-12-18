@@ -83,7 +83,7 @@ fn build_project(project: &str) -> Template {
         false => format!("Failed to build the {} project", project),
     };
 
-    let debug = fs::read_to_string("output.txt").expect("msg");
+    let debug = fs::read_to_string("logs.txt").expect("msg");
     Template::render(
         "build",
         TuxRun {
@@ -129,7 +129,7 @@ fn check_project(project: &str) -> Template {
         false => format!("Failed to check the {} project", project),
     };
 
-    let debug = fs::read_to_string("output.txt").expect("msg");
+    let debug = fs::read_to_string("logs.txt").expect("msg");
     Template::render(
         "check",
         TuxRun {
@@ -151,7 +151,7 @@ fn clean_project(project: &str) -> Template {
         false => format!("Failed to clean the {} project", project),
     };
 
-    let debug = fs::read_to_string("output.txt").expect("msg");
+    let debug = fs::read_to_string("logs.txt").expect("msg");
     Template::render(
         "clean",
         TuxRun {
@@ -173,7 +173,7 @@ fn doc_project(project: &str) -> Template {
         false => format!("Failed to build documentation for the {} project", project),
     };
 
-    let debug = fs::read_to_string("output.txt").expect("msg");
+    let debug = fs::read_to_string("logs.txt").expect("msg");
     Template::render(
         "doc",
         TuxRun {
@@ -191,11 +191,11 @@ fn doc_project(project: &str) -> Template {
 #[get("/bench/<project>")]
 fn bench_project(project: &str) -> Template {
     let msg: String = match Admin::new(directory(project).as_str()).run(vec!["bench".to_string()]) {
-        true => format!("The project {} has been documented successfully", project),
-        false => format!("Failed to build documentation for the {} project", project),
+        true => format!("The bench runned successfully for {} project", project),
+        false => format!("Failed to run bench    for the {} project", project),
     };
 
-    let debug = fs::read_to_string("output.txt").expect("msg");
+    let debug = fs::read_to_string("logs.txt").expect("msg");
     Template::render(
         "bench",
         TuxRun {
@@ -218,7 +218,7 @@ fn clippy_project(project: &str) -> Template {
         false => format!("Failure founded for the {} project", project),
     };
 
-    let debug = fs::read_to_string("output.txt").expect("msg");
+    let debug = fs::read_to_string("logs.txt").expect("msg");
     Template::render(
         "clippy",
         TuxRun {
@@ -240,7 +240,7 @@ fn run_project(project: &str) -> Template {
         false => format!("Failed to run the {} project", project),
     };
 
-    let debug = fs::read_to_string("output.txt").expect("msg");
+    let debug = fs::read_to_string("logs.txt").expect("msg");
     Template::render(
         "run",
         TuxRun {
@@ -262,7 +262,7 @@ fn test_project(project: &str) -> Template {
         false => format!("Failure for the {} project", project),
     };
 
-    let debug = fs::read_to_string("output.txt").expect("msg");
+    let debug = fs::read_to_string("logs.txt").expect("msg");
     Template::render(
         "test",
         TuxRun {
@@ -285,7 +285,7 @@ fn update_project(project: &str) -> Template {
         false => format!("Failed to update the {} project", project),
     };
 
-    let debug = fs::read_to_string("output.txt").expect("msg");
+    let debug = fs::read_to_string("logs.txt").expect("msg");
     Template::render(
         "update",
         TuxRun {
@@ -311,7 +311,7 @@ fn publish_project(project: &str) -> Template {
         false => format!("Failed to publish the {} project", project),
     };
 
-    let debug = fs::read_to_string("output.txt").expect("msg");
+    let debug = fs::read_to_string("logs.txt").expect("msg");
     Template::render(
         "publish",
         TuxRun {
@@ -328,14 +328,13 @@ fn publish_project(project: &str) -> Template {
 
 #[get("/uninstall/<project>")]
 fn uninstall_project(project: &str) -> Template {
-    let msg: String = match Admin::new(directory(project).as_str())
-        .run(vec!["uninstall".to_string(), "--path".to_string()])
-    {
-        true => format!("The project {} has been uninstalled successfully", project),
-        false => format!("Failed to uninstall the {} project", project),
-    };
+    let msg: String =
+        match Admin::new(directory(project).as_str()).run(vec!["uninstall".to_string()]) {
+            true => format!("The project {} has been uninstalled successfully", project),
+            false => format!("Failed to uninstall the {} project", project),
+        };
 
-    let debug = fs::read_to_string("output.txt").expect("msg");
+    let debug = fs::read_to_string("logs.txt").expect("msg");
     Template::render(
         "uninstall",
         TuxRun {
@@ -352,14 +351,16 @@ fn uninstall_project(project: &str) -> Template {
 
 #[get("/install/<project>")]
 fn install_project(project: &str) -> Template {
-    let msg: String = match Admin::new(directory(project).as_str())
-        .run(vec!["install".to_string(), "--path".to_string()])
-    {
+    let msg: String = match Admin::new(directory(project).as_str()).run(vec![
+        "install".to_string(),
+        "--path".to_string(),
+        ".".to_string(),
+    ]) {
         true => format!("The project {} has been installed successfully", project),
         false => format!("Failed to install the {} project", project),
     };
 
-    let debug = fs::read_to_string("output.txt").expect("msg");
+    let debug = fs::read_to_string("logs.txt").expect("msg");
     Template::render(
         "install",
         TuxRun {
@@ -408,7 +409,7 @@ fn yank_repo(project: &str, version: &str) -> Template {
             false => format!("Failed to yanked the {} project", project),
         };
 
-    let debug = fs::read_to_string("output.txt").expect("msg");
+    let debug = fs::read_to_string("logs.txt").expect("msg");
     Template::render(
         "yank",
         TuxRun {

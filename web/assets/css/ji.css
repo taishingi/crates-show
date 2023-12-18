@@ -72,12 +72,21 @@
         @apply block
     }
 
-    .projects {
-        @apply block
+    .project-message {
+        @apply text-center italic bg-transparent font-semibold text-white p-5 border-b-2 border-white rounded-lg mb-5
     }
 
+    .project-log {
+        @apply bg-transparent text-black font-bold
+    }
+
+    .projects-badges {
+        @apply columns-2  
+    }
+
+
     .search {
-        @apply bg-transparent w-full focus:border-4 focus:border-white focus:placeholder:text-white focus:text-white rounded-lg border-white border-4
+        @apply bg-transparent w-full focus:border-4 focus:border-white focus:placeholder:text-white focus:text-white rounded-lg border-white border-4 mt-5 mb-5
     }
 
     .btn {
