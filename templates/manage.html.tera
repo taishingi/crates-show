@@ -3,6 +3,12 @@
 {% block content %}
 <div class="project">
     <h1 class="project-title"> {{project}}</h1>
+    <div class="columns-4">
+        <img src="https://img.shields.io/crates/d/{{project}}?style=flat-square&color=success" alt="download">
+        <img src="https://img.shields.io/docsrs/{{project}}?style=flat-square&color=success" alt="docs">
+        <img src="https://img.shields.io/crates/l/{{project}}?style=flat-square&color=success" alt="licence">
+        <img src="https://img.shields.io/crates/v/{{project}}?style=flat-square&color=success" alt="version">
+    </div>
     <label for="search-action"></label><input type="search" name="search-action" class="search" id="search-action"
         placeholder="Search a action" autofocus="autofocus">
     <ul id="action" class="columns-2">

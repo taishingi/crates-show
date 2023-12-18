@@ -1,7 +1,12 @@
 {% extends "base" %}
 
 {% block content %}
-
+<div class="columns-4 mt-5 mb-5">
+    <a href="/" class="btn">home</a>
+    <a href="/add" class="btn">create project</a>
+    <a href="/time/{{project}}" class="btn">timeline</a>
+    <a href="/manage/{{project}}" class="btn">back</a>
+</div>
 <form action="/add-end-date" method="get">
     <input type="hidden" id="project" value="{{project}}">
 
