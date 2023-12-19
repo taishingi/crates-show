@@ -6,7 +6,7 @@ use rocket::http::ContentType;
 use rocket::request::FlashMessage;
 use rocket::response::{Flash, Redirect};
 use rocket::serde::{Deserialize, Serialize};
-use rocket::{get, launch, post, routes};
+use rocket::{get, launch, post, routes, uri};
 use rocket_dyn_templates::Template;
 use rocket_include_static_resources::{static_resources_initializer, static_response_handler};
 use scan_dir::ScanDir;
@@ -375,26 +375,10 @@ fn install_project(project: &str) -> Template {
     )
 }
 
-#[get("/remove/<project>")]
-fn delete_repo(project: &str) -> Template {
+#[get("/delete/<project>")]
+fn delete_repo(project: &str) -> Redirect {
     fs::remove_dir_all(directory(project).as_str()).expect("failed to remove the directory");
-    let msg: String = match Path::new(directory(project).as_str()).exists() {
-        true => format!("The {} project has been removed successfully", project),
-        false => format!("Failed to remove the {} project", project),
-    };
-
-    Template::render(
-        "remove",
-        TuxRun {
-            url: String::new().add("/"),
-            editor: editor(),
-            title: format!("Removed - {}", project),
-            project: project.to_string(),
-            message: msg,
-            projects: projects(),
-            log: "".to_string(),
-        },
-    )
+    Redirect::to(uri!("/add"))
 }
 
 #[get("/yank/<project>/<version>")]
@@ -470,16 +454,17 @@ fn open(editor: &str, project: &str) -> Flash<Redirect> {
 }
 
 #[get("/add")]
-fn add(flash: Option<FlashMessage>) -> Template {
+fn add() -> Template {
     Template::render(
         "add",
-        Tux {
+        TuxRun {
             title: "Add a new project".to_string(),
             project: "".to_string(),
-            message: flash.map(|flash| flash.message().to_string()),
+            message: format!(""),
             url: String::new().add("/add"),
-            projects: HashMap::new(),
-            editor: std::env::var("TUX_EDITOR").expect("failed to get tux editor preferences"),
+            projects: projects(),
+            editor: editor(),
+            log: format!(""),
         },
     )
 }
@@ -518,25 +503,11 @@ fn add_project(project: &str, t: &str) -> Flash<Redirect> {
 }
 
 #[get("/clone/<project>")]
-fn clone_project(project: &str) -> Template {
-    let msg: String = match Admin::new("").clone(project) {
-        true => format!("The project has been cloned successfully"),
-        false => format!("Failed to clone the project"),
-    };
-
-    let debug = fs::read_to_string("logs.txt").expect("msg");
-    Template::render(
-        "add",
-        TuxRun {
-            url: String::new().add("/clone/").add(project),
-            editor: editor(),
-            title: format!("Add"),
-            project: project.to_string(),
-            message: msg,
-            projects: projects(),
-            log: debug,
-        },
-    )
+fn clone_project(project: &str) -> Redirect {
+    match Admin::new("").clone(project) {
+        true => Redirect::to(format!("/manage/{}", project)),
+        false => Redirect::to(uri!("/add")),
+    }
 }
 
 #[get("/fail/<task>/<project>")]

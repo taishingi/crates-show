@@ -21,6 +21,12 @@ pub mod ji {
                 return false;
             }
 
+            if Path::new("logs.txt").is_file() {
+                fs::remove_file("logs.txt").expect("failed to remove file");
+            }
+
+            let f = File::create("logs.txt").expect("failed to create the file");
+
             let r = String::new()
                 .add("git@")
                 .add(
@@ -36,9 +42,11 @@ pub mod ji {
                 )
                 .add("/")
                 .add(repo);
+
             Command::new("git")
                 .arg("clone")
                 .arg(r.as_str())
+                .stderr(f)
                 .current_dir(std::env::var("TUX_DIR").expect("No found tux dir").as_str())
                 .spawn()
                 .expect("Git error")

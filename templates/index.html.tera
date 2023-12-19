@@ -1,6 +1,9 @@
 {% extends "base" %}
 
 {% block content %}
+<div>
+    <a href="/add" class="btn">clone a project</a>
+</div>
 <div class="others">
     <label for="search"></label><input type="search" name="search" class="search" id="search"
         placeholder="Search a project" autofocus="autofocus">

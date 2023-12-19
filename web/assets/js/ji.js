@@ -21,7 +21,7 @@ $(document).ready(function() {
 
     $("#clone-repository").on("click", function(e) {
         e.preventDefault();
-        let p = $("#url-to-clone").val();
+        let p = $("#project-to-clone").val();
 
         if (p == "") {
             let uri = window.location.protocol + "//" + window.location.host + "/add/";

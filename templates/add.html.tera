@@ -1,6 +1,21 @@
 {% extends "base" %}
 
 {% block content %}
+<form action="/" method="get">
+    <input type="text" name="project"
+        class="w-full bg-transparent  focus:outline-none focus:placeholder:text-white focus:text-white  focus:bg-transparent"
+        placeholder="name of the project" required="required" id="project-to-clone" autofocus="autofocus">
+    <button type="submit" class="btn" id="clone-repository">clone</button>
+</form>
 
+<div class="others">
+    <label for="search"></label><input type="search" name="search" class="search" id="search"
+        placeholder="Search a project">
+    <ul id="myList" class="columns-2">
+        {% for k, v in projects %}
+        <li><a href="/manage/{{k}}" class="btn">{{k}}</a></li>
+        {% endfor %}
+    </ul>
+</div>
 
 {% endblock content %}
