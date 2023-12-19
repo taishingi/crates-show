@@ -441,16 +441,13 @@ fn index(flash: Option<FlashMessage>) -> Template {
     )
 }
 
-#[post("/open/<editor>/<project>")]
-fn open(editor: &str, project: &str) -> Flash<Redirect> {
-    Command::new(editor)
+#[get("/open/<project>")]
+fn open(project: &str) -> Redirect {
+    Command::new(editor().as_str())
         .arg(directory(project).as_str())
         .spawn()
         .expect("failed to open editor");
-    Flash::success(
-        Redirect::to("/"),
-        format!("The {} project or has been opened", project).as_str(),
-    )
+    Redirect::to(format!("/manage/{}", project))
 }
 
 #[get("/add")]
