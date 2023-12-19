@@ -36,7 +36,7 @@ pub mod ji {
                 .wait()
                 .expect("");
 
-            return output.success();
+            output.success()
         }
     }
 }
