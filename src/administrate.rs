@@ -1,6 +1,7 @@
 pub mod ji {
     use std::fs;
     use std::fs::File;
+    use std::ops::Add;
     use std::path::Path;
     use std::process::Command;
 
@@ -20,9 +21,24 @@ pub mod ji {
                 return false;
             }
 
+            let r = String::new()
+                .add("git@")
+                .add(
+                    std::env::var("TUX_PROVIDER")
+                        .expect("failed to find TUX_PROVIDER")
+                        .as_str(),
+                )
+                .add(":")
+                .add(
+                    std::env::var("TUX_PROVIDER_USERNAME")
+                        .expect("Fail to find TUX_PROVIDER_USERNAME")
+                        .as_str(),
+                )
+                .add("/")
+                .add(repo);
             Command::new("git")
                 .arg("clone")
-                .arg(repo)
+                .arg(r.as_str())
                 .current_dir(std::env::var("TUX_DIR").expect("No found tux dir").as_str())
                 .spawn()
                 .expect("Git error")
