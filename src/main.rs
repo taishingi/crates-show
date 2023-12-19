@@ -518,36 +518,25 @@ fn add_project(project: &str, t: &str) -> Flash<Redirect> {
 }
 
 #[get("/clone/<project>")]
-fn clone_project(project: &str) -> Flash<Redirect> {
-    match Command::new("git")
-        .arg("clone")
-        .arg(
-            format!(
-                "git@{}:{}/{}",
-                std::env::var("TUX_PROVIDER").expect("Failed to fin tux provider"),
-                std::env::var("TUX_PROVIDER_USERNAME")
-                    .expect("Failed to find tux provider username"),
-                project
-            )
-            .as_str(),
-        )
-        .arg(project)
-        .current_dir(std::env::var("TUX_DIR").expect("failed to find tux dir"))
-        .spawn()
-        .expect("failed to clone repository")
-        .wait()
-        .expect("")
-        .success()
-    {
-        true => Flash::success(
-            Redirect::to("/add"),
-            format!("The {} project has been cloned successfully", project).as_str(),
-        ),
-        false => Flash::success(
-            Redirect::to("/add"),
-            format!("The {} project has not been cloned successfully", project).as_str(),
-        ),
-    }
+fn clone_project(project: &str) -> Template {
+    let msg: String = match Admin::new("").clone(project) {
+        true => format!("The project has been cloned successfully"),
+        false => format!("Failed to clone the project"),
+    };
+
+    let debug = fs::read_to_string("logs.txt").expect("msg");
+    Template::render(
+        "add",
+        TuxRun {
+            url: String::new().add("/clone/").add(project),
+            editor: editor(),
+            title: format!("Add"),
+            project: project.to_string(),
+            message: msg,
+            projects: projects(),
+            log: debug,
+        },
+    )
 }
 
 #[get("/fail/<task>/<project>")]

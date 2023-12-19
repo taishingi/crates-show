@@ -15,6 +15,21 @@ pub mod ji {
             }
         }
 
+        pub fn clone(self, repo: &str) -> bool {
+            if Path::new(repo).exists() {
+                return false;
+            }
+
+            Command::new("git")
+                .arg("clone")
+                .arg(repo)
+                .current_dir(std::env::var("TUX_DIR").expect("No found tux dir").as_str())
+                .spawn()
+                .expect("Git error")
+                .wait()
+                .expect("msg")
+                .success()
+        }
         pub fn run(self, args: Vec<String>) -> bool {
             if Path::new("logs.txt").is_file() {
                 fs::remove_file("logs.txt").expect("failed to remove the file");
