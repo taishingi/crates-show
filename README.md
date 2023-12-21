@@ -2,7 +2,7 @@
 
 > A web application to manage rust projects.
 
-[**Design**](https://www.figma.com/file/LoH2IH17LXFlugXmuuio3o/tux?type=design&node-id=1%3A2&mode=design&t=3ZFpY3ZYs3328J0N-1)
+[Design](https://www.figma.com/file/LoH2IH17LXFlugXmuuio3o/tux?type=design&node-id=1%3A2&mode=design&t=3ZFpY3ZYs3328J0N-1)
 
 ## Installation
 
