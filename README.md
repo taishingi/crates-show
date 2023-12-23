@@ -1,4 +1,4 @@
-# tux
+# Crates show
 
 > A web application to manage rust projects.
 
