@@ -457,11 +457,11 @@ fn add() -> Template {
         TuxRun {
             title: "Add a new project".to_string(),
             project: "".to_string(),
-            message: format!(""),
+            message: String::new(),
             url: String::new().add("/add"),
             projects: projects(),
             editor: editor(),
-            log: format!(""),
+            log: String::new(),
         },
     )
 }
