@@ -1,6 +1,4 @@
 use crate::administrate::ji::Admin;
-use crate::printable::ji::Impress;
-use printers::printer::JobStatus;
 use rocket::fs::NamedFile;
 use rocket::http::ContentType;
 use rocket::request::FlashMessage;
@@ -96,20 +94,6 @@ fn build_project(project: &str) -> Template {
             log: debug,
         },
     )
-}
-
-#[post("/print/<filename>")]
-fn print_file(filename: &str) -> Flash<Redirect> {
-    match Impress::new().print(filename).status {
-        JobStatus::SUCCESS => Flash::success(
-            Redirect::to("/"),
-            format!("The {} file has been successfully printed", filename).as_str(),
-        ),
-        JobStatus::FAILED => Flash::error(
-            Redirect::to("/"),
-            format!("Failed to printed {}", filename).as_str(),
-        ),
-    }
 }
 
 #[post("/clean-timeline/<project>")]
@@ -660,7 +644,6 @@ fn rocket() -> _ {
                 yank_repo,
                 fail_normal,
                 open,
-                print_file,
                 add,
                 add_project,
                 timeline,
