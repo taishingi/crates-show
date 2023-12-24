@@ -47,7 +47,11 @@ pub mod ji {
                 .arg("clone")
                 .arg(r.as_str())
                 .stderr(f)
-                .current_dir(std::env::var("CRATES_DIR").expect("No found CRATES_DIR").as_str())
+                .current_dir(
+                    std::env::var("CRATES_DIR")
+                        .expect("No found CRATES_DIR")
+                        .as_str(),
+                )
                 .spawn()
                 .expect("Git error")
                 .wait()
