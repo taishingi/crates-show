@@ -71,7 +71,7 @@ static_response_handler! {
     "/assets/manifest.json" => favicon_json => "favicon",
 }
 fn directory(x: &str) -> String {
-    format!("{}/{}", std::env::var("TUX_DIR").expect(""), x)
+    format!("{}/{}", std::env::var("CRATES_DIR").expect(""), x)
 }
 
 #[get("/build/<project>")]
@@ -175,7 +175,7 @@ fn doc_project(project: &str) -> Template {
 #[get("/bench/<project>")]
 fn bench_project(project: &str) -> Template {
     let msg: String = match Admin::new(directory(project).as_str()).run(vec!["bench".to_string()]) {
-        true => format!("The bench runned successfully for {} project", project),
+        true => format!("The bench run successfully for {} project", project),
         false => format!("Failed to run bench    for the {} project", project),
     };
 
@@ -397,7 +397,7 @@ fn yank_repo(project: &str, version: &str) -> Template {
 }
 
 fn projects() -> HashMap<std::string::String, std::string::String> {
-    let project_dir = std::env::var("TUX_DIR").expect("failed to find TUX_DIR variable path");
+    let project_dir = std::env::var("CRATES_DIR").expect("failed to find TUX_DIR variable path");
     let mut projects: HashMap<String, String> = HashMap::new();
     ScanDir::dirs()
         .read(project_dir, |iter| {
@@ -420,7 +420,7 @@ fn index(flash: Option<FlashMessage>) -> Template {
             projects: projects(),
             project: "".to_string(),
             url: "".to_string(),
-            editor: std::env::var("TUX_EDITOR").expect("failed to get tux editor preferences"),
+            editor: editor(),
         },
     )
 }
@@ -500,7 +500,7 @@ fn fail_normal(task: &str, project: &str) -> Template {
             project: project.to_string(),
             errors: fs::read_to_string("./logs.txt").expect("failed to parse file"),
             url: String::new().add(task).add("/").add(project),
-            editor: std::env::var("TUX_EDITOR").expect("failed to get tux editor preferences"),
+            editor: editor(),
         },
     )
 }
@@ -559,7 +559,7 @@ fn add_timeline(project: &str, description: &str, end: &str) -> Template {
 }
 
 fn editor() -> String {
-    std::env::var("TUX_EDITOR").expect("failed to get tux editor preferences")
+    std::env::var("CRATES_EDITOR").expect("failed to get tux editor preferences")
 }
 
 #[get("/manage/<project>")]

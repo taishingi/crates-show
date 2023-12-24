@@ -30,14 +30,14 @@ pub mod ji {
             let r = String::new()
                 .add("git@")
                 .add(
-                    std::env::var("TUX_PROVIDER")
-                        .expect("failed to find TUX_PROVIDER")
+                    std::env::var("CRATES_PROVIDER")
+                        .expect("Fail to find CRATES_PROVIDER")
                         .as_str(),
                 )
                 .add(":")
                 .add(
-                    std::env::var("TUX_PROVIDER_USERNAME")
-                        .expect("Fail to find TUX_PROVIDER_USERNAME")
+                    std::env::var("CRATES_PROVIDER_USERNAME")
+                        .expect("Fail to find CRATES_PROVIDER_USERNAME")
                         .as_str(),
                 )
                 .add("/")
@@ -47,7 +47,7 @@ pub mod ji {
                 .arg("clone")
                 .arg(r.as_str())
                 .stderr(f)
-                .current_dir(std::env::var("TUX_DIR").expect("No found tux dir").as_str())
+                .current_dir(std::env::var("CRATES_DIR").expect("No found CRATES_DIR").as_str())
                 .spawn()
                 .expect("Git error")
                 .wait()
