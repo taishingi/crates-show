@@ -4,12 +4,11 @@ logs.txt
 output.txt
 Cargo.lock
 Cargo.lock
-*.dbcontinuous/
+*.db
+continuous/
 .icon/
 continuous/
 node_modules/
-tux.db
 package-lock.json
-*.css
 web/assets/css/app.css
 .icon/

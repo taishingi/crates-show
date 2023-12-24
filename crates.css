@@ -1,0 +1,95 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+@tailwind variants;
+
+.canvas .closebtn {
+    position: absolute;
+    top: 0;
+    right: 25px;
+    font-size: 36px;
+    margin-left: 50px;
+}
+
+::-webkit-scrollbar {
+    background-color: transparent;
+    width: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+    background-color: rgba(233, 80, 80, 0.873);
+    border-radius: 20px;
+}
+
+::-webkit-scrollbar-corner {
+    border-radius: 20px;
+}
+
+@layer components {
+
+    .card {
+        @apply bg-white rounded-xl w-full
+    }
+
+    .thumb {
+        @apply rounded-xl
+    }
+
+    .readme {
+        @apply text-white mb-10
+    }
+
+    .project-readme a {
+        @apply text-red-500 font-bold
+    }
+
+    .project-readme img {
+        @apply border-white border-4
+    }
+
+    .project-readme h2, .project-readme h3 {
+        @apply uppercase text-center text-white font-bold
+    }
+
+
+    .project-readme code {
+        @apply text-red-400 font-semibold
+    }
+
+    .project-title {
+        @apply uppercase text-white font-bold text-center mt-5 mb-5
+    }
+
+    .card-action {
+        @apply grid grid-cols-3 gap-5 p-4 mb-5
+    }
+
+    .hide {
+        @apply hidden
+    }
+
+    .show {
+        @apply block
+    }
+
+    .project-message {
+        @apply text-center italic bg-transparent font-semibold text-white p-5 border-b-2 border-white rounded-lg mb-5
+    }
+
+    .project-log {
+        @apply bg-transparent text-black font-bold
+    }
+
+    .projects-badges {
+        @apply columns-2  
+    }
+
+
+    .search {
+        @apply bg-transparent w-full focus:border-4 focus:border-white focus:placeholder:text-white focus:text-white rounded-lg border-white border-4 mt-5 mb-5
+    }
+
+    .btn {
+        @apply p-5 block bg-transparent text-center font-bold border-b-2 border-b-red-400 rounded-xl text-white w-full
+    }
+}
