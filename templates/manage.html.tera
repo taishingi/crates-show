@@ -13,6 +13,22 @@
 <div class="presentation">
     <h1>{{crates}}</h1>
     <p>{{description}}</p>
+    <div class="flex justify-center">
+        <div class="columns-4 mb-4 mt-4">
+            <a href="https://crates.io/crates/{{project}}"><img
+                    src="https://img.shields.io/docsrs/{{project}}?style=flat-square"
+                    alt="{{project}} documentation"></a>
+            <a href="https://crates.io/crates/{{project}}"><img
+                    src="https://img.shields.io/crates/v/{{project}}?style=flat-square&color=success"
+                    alt="{{project}} version"></a>
+            <a href="https://crates.io/crates/{{project}}"><img
+                    src="https://img.shields.io/crates/d/{{project}}?style=flat-square&color=success"
+                    alt="{{project}} version"></a>
+            <a href="https://crates.io/crates/{{project}}"><img
+                    src="https://img.shields.io/crates/l/{{project}}?color=success&style=flat-square"
+                    alt="{{project}} licence"></a>
+        </div>
+    </div>
 </div>
 <ul class="tabs">
     <li class="active" rel="tab1">Readme</li>
@@ -76,7 +92,7 @@
     <div id="tab5" class="tab_content">
         <div class="columns-3">
             {% for a in authors %}
-                <p>{{a}}</p>
+            <p>{{a}}</p>
             {%endfor%}
         </div>
     </div>
