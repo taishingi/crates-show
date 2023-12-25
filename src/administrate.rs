@@ -25,8 +25,6 @@ pub mod ji {
                 return false;
             }
 
-           
-
             let f = File::create("logs.txt").expect("failed to create the file");
 
             let r = String::new()
@@ -60,7 +58,7 @@ pub mod ji {
                 .expect("msg")
                 .success()
         }
-        
+
         pub fn run(self, args: Vec<String>) -> bool {
             if Path::new("logs.txt").is_file() {
                 fs::remove_file("logs.txt").expect("failed to remove the file");
