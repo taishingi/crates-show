@@ -12,57 +12,47 @@
 }
 
 ::-webkit-scrollbar {
-    background-color: transparent;
-    width: 10px;
+    @apply bg-transparent w-2
 }
 
 ::-webkit-scrollbar-thumb {
-    background-color: rgba(233, 80, 80, 0.873);
-    border-radius: 20px;
+    @apply bg-gray-400 rounded h-1
 }
 
 ::-webkit-scrollbar-corner {
-    border-radius: 20px;
+    @apply rounded
 }
 
 @layer components {
 
-    .card {
-        @apply bg-white rounded-xl w-full
+    .app {
+        @apply w-11/12 m-auto bg-white overflow-auto shadow-gray-800 shadow-2xl mb-20 mt-20 p-10
     }
 
-    .thumb {
-        @apply rounded-xl
-    }
-
-    .readme {
-        @apply text-white mb-10
-    }
-
-    .project-readme a {
-        @apply text-red-500 font-bold
-    }
-
-    .project-readme img {
-        @apply border-white border-4
-    }
-
-    .project-readme h2, .project-readme h3 {
-        @apply uppercase text-center text-white font-bold
+    .notif {
+        @apply block hover:bg-green-500 hover:text-white bg-transparent border-2 border-green-500 p-5 rounded-xl text-justify text-green-500 font-bold mb-5 w-full
     }
 
 
-    .project-readme code {
-        @apply text-red-400 font-semibold
+    .readme a {
+        @apply text-blue-600 underline font-semibold
     }
 
-    .project-title {
-        @apply uppercase text-white font-bold text-center mt-5 mb-5
+    .readme h1, .readme h2, .readme h3, .readme h4, .readme h5, .readme h6 {
+        @apply text-red-600 font-bold  
     }
 
-    .card-action {
-        @apply grid grid-cols-3 gap-5 p-4 mb-5
-    }
+    .project-readme img {}
+
+    .project-readme h2,
+    .project-readme h3 {}
+
+
+    .project-readme code {}
+
+    .project-title {}
+
+    .card-action {}
 
     .hide {
         @apply hidden
@@ -72,24 +62,87 @@
         @apply block
     }
 
-    .project-message {
-        @apply text-center italic bg-transparent font-semibold text-white p-5 border-b-2 border-white rounded-lg mb-5
-    }
+    .project-message {}
 
-    .project-log {
-        @apply bg-transparent text-black font-bold
-    }
+    .project-log {}
 
     .projects-badges {
-        @apply columns-2  
+        @apply columns-2
     }
 
 
-    .search {
-        @apply bg-transparent w-full focus:border-4 focus:border-white focus:placeholder:text-white focus:text-white rounded-lg border-white border-4 mt-5 mb-5
+    input {
+        @apply w-full mb-10 mt-10
     }
 
     .btn {
-        @apply p-5 block bg-transparent text-center font-bold border-b-2 border-b-red-400 rounded-xl text-white w-full
+        @apply p-5 block cursor-pointer bg-transparent text-center font-bold border-b-2 border-b-red-400 rounded-xl text-red-500 w-full
+    }
+
+    .presentation h1 {
+        @apply text-red-500 uppercase font-bold text-center
+    }
+
+    .presentation p {
+        @apply mt-5 mb-5 text-center text-red-500 font-semibold
+    }
+
+    ul.tabs {
+        @apply flex justify-center list-none leading-5 w-full
+    }
+
+    ul.tabs li {
+        @apply float-left cursor-pointer m-0 p-5 h-5 leading-5 bg-white text-black overflow-hidden relative
+    }
+
+    .tab_last {
+        @apply bg-white
+    }
+
+    ul.tabs li:hover {
+        @apply text-black
+    }
+
+    ul.tabs li.active {
+        @apply float-left block cursor-default m-0 p-5 h-5 leading-5 border-2 border-b-0 border-red-500 bg-white text-red-600 overflow-hidden relative
+    }
+
+    .tab_container {
+        @apply clear-both float-left w-full bg-white
+    }
+
+    .tab_content {
+        @apply p-5 hidden
+    }
+
+    .tab_drawer_heading {
+        display: none;
+    }
+
+    @media screen and (max-width: 480px) {
+        .tabs {
+            display: none;
+        }
+
+        .tab_drawer_heading {
+            background-color: #ccc;
+            color: #fff;
+            border-top: 1px solid #333;
+            margin: 0;
+            padding: 5px 20px;
+            display: block;
+            cursor: pointer;
+            -webkit-touch-callout: none;
+            -webkit-user-select: none;
+            -khtml-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+        }
+
+        .d_active {
+            background-color: #666;
+            color: #fff;
+        }
     }
 }

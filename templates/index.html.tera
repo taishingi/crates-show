@@ -1,6 +1,7 @@
 {% extends "base" %}
 
 {% block content %}
+
 <div>
     <a href="/add" class="btn">clone a project</a>
 </div>

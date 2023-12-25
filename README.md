@@ -1,60 +1,41 @@
-# Crates show
 
-- [Crates show](#crates-show)
-  - [Installation](#installation)
-  - [Update](#update)
-  - [Project directory](#project-directory)
-
-> A web application to manage rust projects.
-
-[Design](https://www.figma.com/file/LoH2IH17LXFlugXmuuio3o/tux?type=design&node-id=1%3A2&mode=design&t=3ZFpY3ZYs3328J0N-1)
-
-## Installation
+- [Toolchain](#toolchain)
+- [Shell variables](#shell-variables)
+- [Manual install](#manual-install)
+- [Service access url](#service-access-url)
+- [Update](#update)
+- [Project directory](#project-directory)
+  
+## Toolchain
 
 ```shell
 rustup default nightly
 ```
 
+## Shell variables 
+
 ```shell
 export CRATES_DIR=$HOME/Documents/Github
+export CRATES_EDITOR=code
+export CRATES_PROVIDER=github.com
+export CRATES_PROVIDER_USERNAME=taishingi
 ```
+
+## Manual install
 
 ```shell
-echo "set -x TUX_EDITOR rustrover" >> $HOME/.config/fish/config.fish
+git clone https://github.com/taishingi/crates-show.git /tmp/crates
+cd /tmp/crates
+vim crates.service
+cp crates.service ~/.config/systemd/user/
+sudo cp crates /usr/bin/
+systemctl enable --user --now creates.service
 ```
 
-```shell
-echo "set -x TUX_PROVIDER github.com" >> $HOME/.config/fish/config.fish
-```
+## Service access url
 
-```shell
-echo "set -x TUX_PROVIDER_USERNAME taishingi" >> $HOME/.config/fish/config.fish
-```
-
-```shell
-git clone https://github.com/taishingi/tux.git /tmp/tux && cd /tmp/tux
-```
-
-```shell
-cp tux.service ~/.config/systemd/user/
-```
-
-```shell
-sudo cp tux /usr/bin/
-```
-
-```shell
-systemctl enable --user tux.service
-```
-
-```shell
-systemctl start --user tux.service
-```
-
-> Service access url
-
-```http
-http://127.0.0.1:3000
+```bash
+vivaldi-stable http://127.0.0.1:3000
 ```
 
 ## Update

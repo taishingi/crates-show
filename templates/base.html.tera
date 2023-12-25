@@ -27,7 +27,7 @@
 </head>
 
 <body class="bg-white dark:bg-black">
-    <div class="container p-5">
+    <div class="app">
         {% block content %}{% endblock content %}
     </div>
     <script src="https://code.jquery.com/jquery-3.7.1.js"

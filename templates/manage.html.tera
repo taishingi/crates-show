@@ -1,48 +1,105 @@
 {% extends "base" %}
 
 {% block content %}
-<div class="project">
-    <h1 class="project-title"> {{project}}</h1>
-    <a href="/open/{{project}}" class="btn mt-5 mb-5">open with {{editor}}</a>
-    <div class="columns-4">
-        <img src="https://img.shields.io/crates/d/{{project}}?style=flat-square&color=success" alt="download">
-        <img src="https://img.shields.io/docsrs/{{project}}?style=flat-square&color=success" alt="docs">
-        <img src="https://img.shields.io/crates/l/{{project}}?style=flat-square&color=success" alt="licence">
-        <img src="https://img.shields.io/crates/v/{{project}}?style=flat-square&color=success" alt="version">
-    </div>
-    <label for="search-action"></label><input type="search" name="search-action" class="search" id="search-action"
-        placeholder="Search a action" autofocus="autofocus">
-    <ul id="action" class="columns-2">
-        <li><a href="/build/{{project}}" class="btn">build</a></li>
-        <li><a href="/check/{{project}}" class="btn">check</a></li>
-        <li><a href="/clean/{{project}}" class="btn">clean</a></li>
-        <li><a href="/doc/{{project}}" class="btn">doc</a></li>
-        <li><a href="/run/{{project}}" class="btn">run</a></li>
-        <li><a href="/test/{{project}}" class="btn">test</a></li>
-        <li><a href="/bench/{{project}}" class="btn">bench</a></li>
-        <li><a href="/update/{{project}}" class="btn">update</a></li>
-        <li><a href="/clippy/{{project}}" class="btn">clippy</a></li>
-        <li><a href="/publish/{{project}}" class="btn">publish</a></li>
-        <li><a href="/install/{{project}}" class="btn">install</a></li>
-        <li><a href="/uninstall/{{project}}" class="btn">uninstall</a></li>
-        <li><a href="/yank/{{project}}" class="btn">yank</a></li>
-        <li><a href="/delete/{{project}}" class="btn">delete</a></li>
-        <li><a href="/time/{{project}}" class="btn">timeline</a></li>
-        <li><a href="https://crates.io/crates/{{project}}" class="btn">crates.io</a></li>
-    </ul>
-    <pre class="project-readme">
+{% if message %}
+<div class="notif">
+    <p>{{message}}</p>
+</div>
+{% endif %}
+<div class="columns-2 mt-5 mb-5">
+    <a href="/" class="btn">home</a>
+    <a href="/open/{{project}}" class="btn">{{editor}}</a>
+</div>
+<div class="presentation">
+    <h1>{{crates}}</h1>
+    <p>{{description}}</p>
+</div>
+<ul class="tabs">
+    <li class="active" rel="tab1">Readme</li>
+    <li rel="tab2">Action</li>
+    <li rel="tab3">Log</li>
+    <li rel="tab4">Dependencies</li>
+    <li rel="tab5">Authors</li>
+    <li rel="tab6">Links</li>
+    <li rel="tab7">Licence</li>
+    <li rel="tab8">Others</li>
+</ul>
+<div class="tab_container">
+    <h3 class="d_active tab_drawer_heading" rel="tab1">Readme</h3>
+    <div id="tab1" class="tab_content">
+       
             {{ readme | safe }}
-    </pre>
-</div>
-<div class="others">
-    <label for="search"></label><input type="search" name="search" class="search" id="search"
-        placeholder="Search a project">
+    </div>
+    <!-- #tab1 -->
+    <h3 class="tab_drawer_heading" rel="tab2">Tab 2</h3>
+    <div id="tab2" class="tab_content">
+        <label for="search-action"></label><input type="search" name="search-action" class="search" id="search-action"
+            placeholder="Search a action" autofocus="autofocus">
+        <ul id="action" class="columns-2">
+            <li><a href="/build/{{project}}" class="btn">build</a></li>
+            <li><a href="/check/{{project}}" class="btn">check</a></li>
+            <li><a href="/clean/{{project}}" class="btn">clean</a></li>
+            <li><a href="/doc/{{project}}" class="btn">doc</a></li>
+            <li><a href="/run/{{project}}" class="btn">run</a></li>
+            <li><a href="/test/{{project}}" class="btn">test</a></li>
+            <li><a href="/bench/{{project}}" class="btn">bench</a></li>
+            <li><a href="/update/{{project}}" class="btn">update</a></li>
+            <li><a href="/clippy/{{project}}" class="btn">clippy</a></li>
+            <li><a href="/publish/{{project}}" class="btn">publish</a></li>
+            <li><a href="/install/{{project}}" class="btn">install</a></li>
+            <li><a href="/uninstall/{{project}}" class="btn">uninstall</a></li>
+            <li><a href="/yank/{{project}}" class="btn">yank</a></li>
+            <li><a href="/delete/{{project}}" class="btn">delete</a></li>
+            <li><a href="/time/{{project}}" class="btn">timeline</a></li>
+            <li><a href="https://crates.io/crates/{{project}}" class="btn">crates.io</a></li>
+        </ul>
+    </div>
 
-
-    <ul id="myList" class="columns-2">
-        {% for k, v in projects %}
-        <li><a href="/manage/{{k}}" class="btn">{{k}}</a></li>
-        {% endfor %}
-    </ul>
+    <!-- #tab2 -->
+    <h3 class="tab_drawer_heading" rel="tab3">Tab 3</h3>
+    <div id="tab3" class="tab_content">
+        <a href="/clean-logs/{{project}}" class="btn mt-5 mb-10">clean log</a>
+        <pre>
+            {{log}}
+        </pre>
+    </div>
+    <!-- #tab2 -->
+    <h3 class="tab_drawer_heading" rel="tab4">Tab 3</h3>
+    <div id="tab4" class="tab_content">
+        {% for d in dependencies %}
+        <p>{{d | safe}}</p>
+        {%endfor%}
+    </div>
+    <!-- #tab3 -->
+    <h3 class="tab_drawer_heading" rel="tab5">Tab 4</h3>
+    <div id="tab5" class="tab_content">
+        {% for a in authors %}
+        <p>{{a}}</p>
+        {%endfor%}
+    </div>
+    <!-- #tab3 -->
+    <h3 class="tab_drawer_heading" rel="tab6">Tab 5</h3>
+    <div id="tab6" class="tab_content">
+        <a href="{{repository}}"> {{project}}</a></pre>
+    </div>
+    <!-- #tab3 -->
+    <h3 class="tab_drawer_heading" rel="tab7">Tab 6</h3>
+    <div id="tab7" class="tab_content">
+        <pre> {{licence}}</pre>
+    </div>
+    <!-- #tab3 -->
+    <h3 class="tab_drawer_heading" rel="tab8">Tab 7</h3>
+    <div id="tab8" class="tab_content">
+        <div class="others">
+            <label for="search"></label><input type="search" name="search" class="search" id="search"
+                placeholder="Search a project">
+            <ul id="myList" class="columns-2">
+                {% for k, v in projects %}
+                <li><a href="/manage/{{k}}" class="btn">{{k}}</a></li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
 </div>
+
 {% endblock content %}
