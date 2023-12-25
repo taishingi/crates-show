@@ -441,6 +441,9 @@ fn manage(project: &str, flash: Option<FlashMessage>) -> Template {
     let mut deps: Vec<String> = Vec::new();
     let d = m.root_package().expect("msg").dependencies.clone();
 
+    if !Path::new("logs.txt").is_file() {
+        fs::File::create("logs.txt").expect("failed to create logs file");
+    }
     for x in d.iter() {
         deps.push(format!(
             "<a href=\"https://crates.io/crates/{}\">{}</a>",
