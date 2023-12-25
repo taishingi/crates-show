@@ -65,16 +65,20 @@
     <!-- #tab2 -->
     <h3 class="tab_drawer_heading" rel="tab4">Tab 3</h3>
     <div id="tab4" class="tab_content">
-        {% for d in dependencies %}
-        <p>{{d | safe}}</p>
-        {%endfor%}
+        <div class="columns-3">
+            {% for d in dependencies %}
+            <p>{{d | safe}}</p>
+            {%endfor%}
+        </div>
     </div>
     <!-- #tab3 -->
     <h3 class="tab_drawer_heading" rel="tab5">Tab 4</h3>
     <div id="tab5" class="tab_content">
-        {% for a in authors %}
-        <p>{{a}}</p>
-        {%endfor%}
+        <div class="columns-3">
+            {% for a in authors %}
+                <p>{{a}}</p>
+            {%endfor%}
+        </div>
     </div>
     <!-- #tab3 -->
     <h3 class="tab_drawer_heading" rel="tab6">Tab 5</h3>
