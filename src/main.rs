@@ -440,6 +440,24 @@ fn manage(project: &str, flash: Option<FlashMessage>) -> Template {
     let m = metadata(project).unwrap();
     let mut deps: Vec<String> = Vec::new();
     let d = m.root_package().expect("msg").dependencies.clone();
+    let c: String = m.root_package().expect("msg").name.to_string();
+    let mut crates = String::new();
+
+    if c.contains("-") {
+        let parts: Vec<&str> = c.split("-").collect();
+        for &p in parts.iter() {
+            crates.push_str(" ");
+            crates.push_str(p);
+        }
+    }
+
+    if c.contains("_") {
+        let parts: Vec<&str> = c.split("_").collect();
+        for &p in parts.iter() {
+            crates.push_str(" ");
+            crates.push_str(p);
+        }
+    }
 
     if !Path::new("logs.txt").is_file() {
         fs::File::create("logs.txt").expect("failed to create logs file");
@@ -482,7 +500,7 @@ fn manage(project: &str, flash: Option<FlashMessage>) -> Template {
             licence: fs::read_to_string(l).expect("msg"),
             message: Some(msg),
             log: fs::read_to_string("logs.txt").expect("failed to parse log"),
-            crates: m.root_package().expect("msg").name.to_string(),
+            crates,
             description: m
                 .root_package()
                 .expect("msg")

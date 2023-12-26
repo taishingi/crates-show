@@ -2,13 +2,16 @@
 
 {% block content %}
 
-<div>
-    <a href="/add" class="btn">clone a project</a>
+<div class="flex justify-center">
+    <a href="/add" class="btn w-1/2 mb-10 mt-10">clone a project</a>
 </div>
 <div class="others">
-    <label for="search"></label><input type="search" name="search" class="search" id="search"
-        placeholder="Search a project" autofocus="autofocus">
-    <ul id="myList" class="columns-2">
+    <div class="flex justify-center">
+        <label for="search-action"></label><input type="search" name="search-action"
+            class="bg-transparent border-3 border-blue-500 dark:placeholder:text-blue-500 dark:placeholder:font-semibold focus:dark:placeholder:text-blue-500 focus:dark:text-blue-500 focus:dark:font-bold  w-1/2 mb-20 mt-10" id="search"
+            placeholder="Search a project" autofocus="autofocus">
+    </div>
+    <ul id="myList" class="columns-4">
         {% for k, v in projects %}
         <li><a href="/manage/{{k}}" class="btn">{{k}}</a></li>
         {% endfor %}

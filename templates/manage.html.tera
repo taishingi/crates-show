@@ -14,7 +14,7 @@
     <h1>{{crates}}</h1>
     <p>{{description}}</p>
     <div class="flex justify-center">
-        <div class="columns-4 mb-4 mt-4">
+        <div class="columns-4 mb-10 mt-10">
             <a href="https://crates.io/crates/{{project}}"><img
                     src="https://img.shields.io/docsrs/{{project}}?style=flat-square"
                     alt="{{project}} documentation"></a>
@@ -43,14 +43,20 @@
 <div class="tab_container">
     <h3 class="d_active tab_drawer_heading" rel="tab1">Readme</h3>
     <div id="tab1" class="tab_content">
-        {{ readme | safe }}
+        <div class="readme">
+            {{ readme | safe }}
+        </div>
     </div>
     <!-- #tab1 -->
     <h3 class="tab_drawer_heading" rel="tab2">Tab 2</h3>
     <div id="tab2" class="tab_content">
-        <label for="search-action"></label><input type="search" name="search-action" class="search" id="search-action"
-            placeholder="Search a action" autofocus="autofocus">
-        <ul id="action" class="columns-2">
+        <div class="flex justify-center">
+
+            <label for="search-action"></label><input type="search" name="search-action"
+                class="bg-transparent border-3 border-blue-500 dark:placeholder:text-blue-500 dark:placeholder:font-semibold focus:dark:placeholder:text-blue-500 focus:dark:text-blue-500 focus:dark:font-bold  w-1/2 mb-20 mt-10"
+                id="search-action" placeholder="Search a action" autofocus="autofocus">
+        </div>
+        <ul id="action" class="columns-4">
             <li><a href="/build/{{project}}" class="btn">build</a></li>
             <li><a href="/check/{{project}}" class="btn">check</a></li>
             <li><a href="/clean/{{project}}" class="btn">clean</a></li>
@@ -104,20 +110,23 @@
     <!-- #tab3 -->
     <h3 class="tab_drawer_heading" rel="tab7">Tab 6</h3>
     <div id="tab7" class="tab_content">
-        <pre> {{licence}}</pre>
+        <div class="license">
+            <pre> {{licence}}</pre>
+        </div>
     </div>
     <!-- #tab3 -->
     <h3 class="tab_drawer_heading" rel="tab8">Tab 7</h3>
     <div id="tab8" class="tab_content">
-        <div class="others">
-            <label for="search"></label><input type="search" name="search" class="search" id="search"
-                placeholder="Search a project">
-            <ul id="myList" class="columns-2">
-                {% for k, v in projects %}
-                <li><a href="/manage/{{k}}" class="btn">{{k}}</a></li>
-                {% endfor %}
-            </ul>
+        <div class="flex justify-center">
+            <label for="search-action"></label><input type="search" name="search-action"
+                class="bg-transparent border-3 border-blue-500 dark:placeholder:text-blue-500 dark:placeholder:font-semibold focus:dark:placeholder:text-blue-500 focus:dark:text-blue-500 focus:dark:font-bold  w-1/2 mb-20 mt-10"
+                id="search" placeholder="Search a project" autofocus="autofocus">
         </div>
+        <ul id="myList" class="columns-3">
+            {% for k, v in projects %}
+            <li><a href="/manage/{{k}}" class="btn">{{k}}</a></li>
+            {% endfor %}
+        </ul>
     </div>
 </div>
 

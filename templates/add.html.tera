@@ -1,17 +1,24 @@
 {% extends "base" %}
 
 {% block content %}
-<form action="/" method="get">
-    <input type="text" name="project"
-        class="w-full bg-transparent  focus:outline-none focus:placeholder:text-white focus:text-white  focus:bg-transparent"
-        placeholder="name of the project" required="required" id="project-to-clone" autofocus="autofocus">
-    <button type="submit" class="btn" id="clone-repository">clone</button>
-</form>
 
+
+<div class="w-1/2 m-auto mb-10">
+    <form action="/" method="get">
+        <label for="project-to-clone"></label><input type="search" name="search-action"
+            class="bg-transparent border-3 border-blue-500 dark:placeholder:text-blue-500 dark:placeholder:font-semibold focus:dark:placeholder:text-blue-500 focus:dark:text-blue-500 focus:dark:font-bold  w-full"
+            id="project-to-clone" placeholder="name of the project" autofocus="autofocus" required="required">
+
+        <button type="submit" class="btn" id="clone-repository">clone</button>
+    </form>
+</div>
 <div class="others">
-    <label for="search"></label><input type="search" name="search" class="search" id="search"
-        placeholder="Search a project">
-    <ul id="myList" class="columns-2">
+    <div class="flex justify-center">
+        <label for="search-action"></label><input type="search" name="search-action"
+            class="bg-transparent border-3 border-blue-500 dark:placeholder:text-blue-500 dark:placeholder:font-semibold focus:dark:placeholder:text-blue-500 focus:dark:text-blue-500 focus:dark:font-bold  w-1/2 mb-20 mt-10"
+            id="search" placeholder="Search a project" autofocus="autofocus">
+    </div>
+    <ul id="myList" class="columns-4">
         {% for k, v in projects %}
         <li><a href="/manage/{{k}}" class="btn">{{k}}</a></li>
         {% endfor %}
