@@ -449,14 +449,14 @@ fn manage(project: &str, flash: Option<FlashMessage>) -> Template {
             crates.push(' ');
             crates.push_str(p);
         }
-    }
-
-    if c.contains('_') {
+    } else if c.contains('_') {
         let parts: Vec<&str> = c.split('_').collect();
         for &p in parts.iter() {
             crates.push(' ');
             crates.push_str(p);
         }
+    } else {
+        crates.push_str(c.as_str());
     }
 
     if !Path::new("logs.txt").is_file() {
