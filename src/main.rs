@@ -443,18 +443,18 @@ fn manage(project: &str, flash: Option<FlashMessage>) -> Template {
     let c: String = m.root_package().expect("msg").name.to_string();
     let mut crates = String::new();
 
-    if c.contains("-") {
-        let parts: Vec<&str> = c.split("-").collect();
+    if c.contains('-') {
+        let parts: Vec<&str> = c.split('-').collect();
         for &p in parts.iter() {
-            crates.push_str(" ");
+            crates.push(' ');
             crates.push_str(p);
         }
     }
 
-    if c.contains("_") {
-        let parts: Vec<&str> = c.split("_").collect();
+    if c.contains('_') {
+        let parts: Vec<&str> = c.split('_').collect();
         for &p in parts.iter() {
-            crates.push_str(" ");
+            crates.push(' ');
             crates.push_str(p);
         }
     }
