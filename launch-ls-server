@@ -7,5 +7,7 @@ if [ -d "${DIR}" ]; then
     cargo run --release
 else
     git clone https://github.com/taishingi/ls.git "${DIR}" && cd "${DIR}" || exit 1
+    npm install
+    npm run prod
     cargo run --release
 fi

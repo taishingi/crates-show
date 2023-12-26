@@ -3,12 +3,13 @@ Description=Server web to list an administrate cargo project
 Wants=network-online.target
 After=network-online.target
 [Service]
-Environment="CRATES_DIR=/home/juwishmaster/Documents/"
-Environment="CRATES_EDITOR=code"
+Environment="CRATES_DIR=/home/juwishmaster/Documents/GitHub"
+Environment="CRATES_EDITOR=code-insiders"
 Environment="CRATES_PROVIDER=github.com"
 Environment="CRATES_PROVIDER_USERNAME=taishingi"
 Type=simple
 ExecStartPre=notify-send "launch the ls server"
+ExecStopPost=notify-send "ls server is down"
 ExecStart=%h/bin/launch-ls-server
 [Install]
 WantedBy=default.target
