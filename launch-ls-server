@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+
+DIR="${HOME}/.ls-server"
+
+if [ -d "${DIR}" ]; then
+    cd "${DIR}" || exit 1
+    cargo run --release
+else
+    git clone https://github.com/taishingi/ls.git "${DIR}" && cd "${DIR}" || exit 1
+    cargo run --release
+fi
