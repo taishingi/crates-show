@@ -73,5 +73,3 @@ set -x CRATES_EDITOR code-insiders        # Your prefers code editor
 set -x CRATES_PROVIDER github.com         # The site where you can clone crates
 set -x CRATES_PROVIDER_USERNAME taishingi # The website username to clone crates
 ```
-
-
