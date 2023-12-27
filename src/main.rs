@@ -530,7 +530,7 @@ async fn rust_img() -> NamedFile {
 fn readme(p: &str) -> String {
     let c = fs::read_to_string(p).expect("Fail to find file");
     if p.contains("md") {
-        return rustmark::parse(c.as_str(), true).2.to_string();
+        return rustmark::parse(c.as_str(), false).2.to_string();
     }
     c
 }

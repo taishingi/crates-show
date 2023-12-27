@@ -34,9 +34,15 @@
     }
 
     .readme a {
-        @apply dark:text-blue-600 dark:font-bold dark:underline
+        @apply dark:text-blue-600 dark:font-bold dark:underline hover:dark:text-teal-600
     }
 
+    .readme p{
+        @apply mt-5 mb-5
+    }
+    .readme ul {
+        @apply  mb-5
+    }
     .readme img {
         @apply dark:border-2 dark:border-white mt-5 mb-5
     }
