@@ -69,8 +69,8 @@
             <li><a href="/publish/{{project}}" class="btn">publish</a></li>
             <li><a href="/install/{{project}}" class="btn">install</a></li>
             <li><a href="/uninstall/{{project}}" class="btn">uninstall</a></li>
-            <li><a href="/yank/{{project}}" class="btn">yank</a></li>
-            <li><a href="/delete/{{project}}" class="btn">delete</a></li>
+            <li><a href="/yank/{{project}}" class="btn confirm-yank" repo="{{project}}">yank</a></li>
+            <li><a href="/delete/{{project}}" class="btn confirm-delete" repo="{{project}}">delete</a></li>
             <li><a href="/time/{{project}}" class="btn">timeline</a></li>
             <li><a href="https://crates.io/crates/{{project}}" class="btn">crates.io</a></li>
         </ul>
