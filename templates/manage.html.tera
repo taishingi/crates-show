@@ -71,7 +71,7 @@
             <li><a href="/uninstall/{{project}}" class="btn">uninstall</a></li>
             <li><a href="/yank/{{project}}" class="btn confirm-yank" repo="{{project}}">yank</a></li>
             <li><a href="/delete/{{project}}" class="btn confirm-delete" repo="{{project}}">delete</a></li>
-            <li><a href="/time/{{project}}" class="btn">timeline</a></li>
+            <li><a href="/audit/{{project}}" class="btn">audit</a></li>
             <li><a href="https://crates.io/crates/{{project}}" class="btn">crates.io</a></li>
         </ul>
     </div>
@@ -81,7 +81,7 @@
     <div id="tab3" class="tab_content">
         <a href="/clean-logs/{{project}}" class="btn mt-5 mb-10">clean log</a>
         <pre>
-            {{log}}
+            {{log | safe}}
         </pre>
     </div>
     <!-- #tab2 -->

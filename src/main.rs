@@ -6,7 +6,7 @@ use rocket::http::ContentType;
 use rocket::request::FlashMessage;
 use rocket::response::{Flash, Redirect};
 use rocket::serde::{Deserialize, Serialize};
-use rocket::{get, launch, post, routes, uri};
+use rocket::{get, launch, routes, uri};
 use rocket_dyn_templates::Template;
 use rocket_include_static_resources::{static_resources_initializer, static_response_handler};
 use scan_dir::ScanDir;
@@ -92,16 +92,6 @@ fn build_project(project: &str) -> Flash<Redirect> {
     Flash::success(Redirect::to(format!("/manage/{}", project)), msg)
 }
 
-#[post("/clean-timeline/<project>")]
-fn clean_timeline(project: &str) -> Flash<Redirect> {
-    fs::remove_file(format!("{}/{}.db", directory(project), project).as_str())
-        .expect("failed to remove database");
-    Flash::success(
-        Redirect::to("/"),
-        format!("The {} project timeline has been cleaned", project).as_str(),
-    )
-}
-
 #[get("/check/<project>")]
 fn check_project(project: &str) -> Flash<Redirect> {
     let msg: String = match Admin::new(directory(project).as_str()).run(vec!["check".to_string()]) {
@@ -148,6 +138,20 @@ fn clippy_project(project: &str) -> Flash<Redirect> {
     {
         true => format!("The project {} has been checked successfully", project),
         false => format!("Failure founded for the {} project", project),
+    };
+
+    Flash::success(Redirect::to(format!("/manage/{}", project)), msg)
+}
+
+#[get("/audit/<project>")]
+fn audit_project(project: &str) -> Flash<Redirect> {
+    let msg: String = match Admin::new(directory(project).as_str()).run(vec![
+        "audit".to_string(),
+        "--color".to_string(),
+        "never".to_string(),
+    ]) {
+        true => format!("No vulnerabilities founded for the {} project", project),
+        false => format!("vulnerabilities found for the {} project", project),
     };
 
     Flash::success(Redirect::to(format!("/manage/{}", project)), msg)
@@ -462,6 +466,16 @@ fn manage(project: &str, flash: Option<FlashMessage>) -> Template {
     if !Path::new("logs.txt").is_file() {
         fs::File::create("logs.txt").expect("failed to create logs file");
     }
+
+    if !Path::new("output.txt").is_file() {
+        fs::File::create("output.txt").expect("failed to create output file");
+    }
+
+    let mut lg: String = fs::read_to_string("logs.txt").expect("failed to parse log");
+    lg.push_str("\n");
+
+    lg.push_str(fs::read_to_string("output.txt").expect("msg").as_str());
+
     for x in d.iter() {
         deps.push(format!(
             "<a href=\"https://crates.io/crates/{}\">{}</a>",
@@ -499,7 +513,7 @@ fn manage(project: &str, flash: Option<FlashMessage>) -> Template {
                 .to_string(),
             licence: fs::read_to_string(l).expect("msg"),
             message: Some(msg),
-            log: fs::read_to_string("logs.txt").expect("failed to parse log"),
+            log: lg,
             crates,
             description: m
                 .root_package()
@@ -606,7 +620,7 @@ fn rocket() -> _ {
                 timeline,
                 add_timeline,
                 install_project,
-                clean_timeline,
+                audit_project,
                 clone_project,
                 rust_img,
                 manage,
