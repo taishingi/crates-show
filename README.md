@@ -24,6 +24,7 @@ rustup default nightly
 - nodejs
 - rustup
 - cargo
+- cargo-audit 
 
 ## Manual install
 
