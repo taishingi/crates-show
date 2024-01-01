@@ -542,6 +542,7 @@ fn readme(p: &str) -> String {
     }
     c
 }
+
 #[get("/assets/css/app.css")]
 fn css() -> (ContentType, &'static str) {
     (
