@@ -1,0 +1,12 @@
+[Unit]
+Description=ungit
+Documentation=https://www.npmjs.com/package/ungit
+
+[Service]
+Type=simple
+ExecStart=ungit --port 8448
+Restart=on-failure
+Environment=GIT_TRACE=1
+
+[Install]
+WantedBy=basic.target
