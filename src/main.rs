@@ -1,7 +1,6 @@
 use crate::administrate::ji::Admin;
 use cargo_metadata::camino::Utf8PathBuf;
 use cargo_metadata::{CargoOpt, Metadata, MetadataCommand};
-use rocket::fs::NamedFile;
 use rocket::http::ContentType;
 use rocket::request::FlashMessage;
 use rocket::response::{Flash, Redirect};
@@ -52,7 +51,7 @@ struct TuxManage {
     dependencies: Vec<String>,
     authors: Vec<String>,
     repository: String,
-    licence: String,
+    license: String,
     log: String,
     crates: String,
     description: String,
@@ -511,7 +510,7 @@ fn manage(project: &str, flash: Option<FlashMessage>) -> Template {
                 .repository
                 .expect("msg")
                 .to_string(),
-            licence: fs::read_to_string(l).expect("msg"),
+            license: fs::read_to_string(l).expect("msg"),
             message: Some(msg),
             log: lg,
             crates,
@@ -535,12 +534,7 @@ fn clean_logs(project: &str) -> Flash<Redirect> {
         "Log is now empty",
     )
 }
-#[get("/web/assets/img/rust-mascot.png")]
-async fn rust_img() -> NamedFile {
-    NamedFile::open(Path::new("web/assets/img/rust-mascot.png"))
-        .await
-        .expect("msg")
-}
+
 fn readme(p: &str) -> String {
     let c = fs::read_to_string(p).expect("Fail to find file");
     if p.contains("md") {
@@ -622,7 +616,6 @@ fn rocket() -> _ {
                 install_project,
                 audit_project,
                 clone_project,
-                rust_img,
                 manage,
                 clean_logs,
             ],
