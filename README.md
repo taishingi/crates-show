@@ -60,7 +60,7 @@ Environment="CRATES_PROVIDER_USERNAME=taishingi"
 ### Bash
 
 ```bash
-export CRATES_DIR=$HOME/Documents/Github  # Path to your project
+export CRATES_DIR=$HOME/Documents/GitHub  # Path to your project
 export CRATES_EDITOR=code-insiders        # Your prefers code editor
 export CRATES_PROVIDER=github.com         # The site where you can clone crates
 export CRATES_PROVIDER_USERNAME=taishingi # The website username to clone crates
@@ -69,7 +69,7 @@ export CRATES_PROVIDER_USERNAME=taishingi # The website username to clone crates
 ### Fish
 
 ```bash
-set -x CRATES_DIR $HOME/Documents/Github  # Path to your project
+set -x CRATES_DIR $HOME/Documents/GitHub  # Path to your project
 set -x CRATES_EDITOR code-insiders        # Your prefers code editor
 set -x CRATES_PROVIDER github.com         # The site where you can clone crates
 set -x CRATES_PROVIDER_USERNAME taishingi # The website username to clone crates
