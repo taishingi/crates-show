@@ -25,6 +25,7 @@ rustup default stable
 - rustup
 - cargo
 - cargo-audit 
+- editor
 
 ## Manual install
 
