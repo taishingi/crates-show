@@ -15,7 +15,7 @@ A cargo website to help rust programers.
 ## Toolchain
 
 ```shell
-rustup default nightly
+rustup default stable
 ```
 
 ## Dependencies
