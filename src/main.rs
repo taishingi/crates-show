@@ -291,7 +291,7 @@ fn index(flash: Option<FlashMessage>) -> Template {
     Template::render(
         "index",
         Tux {
-            title: "Tux".to_string(),
+            title: "ls a cargo project manager".to_string(),
             message: flash.map(|flash| flash.message().to_string()),
             projects: projects(""),
             project: "".to_string(),
