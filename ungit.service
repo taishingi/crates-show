@@ -4,7 +4,7 @@ Documentation=https://www.npmjs.com/package/ungit
 
 [Service]
 Type=simple
-ExecStart=ungit --port 8448
+ExecStart=ungit 
 Restart=on-failure
 Environment=GIT_TRACE=1
 
