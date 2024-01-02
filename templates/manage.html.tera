@@ -26,7 +26,7 @@
                     alt="{{project}} version"></a>
             <a href="https://crates.io/crates/{{project}}"><img
                     src="https://img.shields.io/crates/l/{{project}}?color=success&style=flat-square"
-                    alt="{{project}} licence"></a>
+                    alt="{{project}} license"></a>
         </div>
     </div>
 </div>
@@ -37,7 +37,7 @@
     <li rel="tab4">Dependencies</li>
     <li rel="tab5">Authors</li>
     <li rel="tab6">Links</li>
-    <li rel="tab7">Licence</li>
+    <li rel="tab7">License</li>
     <li rel="tab8">Others</li>
 </ul>
 <div class="tab_container">
@@ -111,7 +111,7 @@
     <h3 class="tab_drawer_heading" rel="tab7">Tab 6</h3>
     <div id="tab7" class="tab_content">
         <div class="license">
-            <pre> {{licence}}</pre>
+            <pre> {{license}}</pre>
         </div>
     </div>
     <!-- #tab3 -->
