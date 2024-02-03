@@ -1,5 +1,4 @@
 use crate::administrate::ji::Admin;
-use cargo_metadata::camino::Utf8PathBuf;
 use cargo_metadata::{CargoOpt, Metadata, MetadataCommand};
 use rocket::http::ContentType;
 use rocket::request::FlashMessage;
@@ -255,7 +254,7 @@ fn yank_repo(project: &str, version: &str) -> Flash<Redirect> {
     }
 }
 
-fn projects(project: &str) -> HashMap<std::string::String, std::string::String> {
+fn projects(project: &str) -> HashMap<String, String> {
     let project_dir = std::env::var("CRATES_DIR").expect("failed to find CRATES_DIR variable path");
     let mut projects: HashMap<String, String> = HashMap::new();
     if project.is_empty() {
@@ -442,7 +441,7 @@ fn editor() -> String {
 fn manage(project: &str, flash: Option<FlashMessage>) -> Template {
     let m = metadata(project).unwrap();
     let mut deps: Vec<String> = Vec::new();
-    let d = m.root_package().expect("msg").dependencies.clone();
+    let d = m.root_package().expect("");
     let c: String = m.root_package().expect("msg").name.to_string();
     let mut crates = String::new();
 
@@ -471,23 +470,19 @@ fn manage(project: &str, flash: Option<FlashMessage>) -> Template {
     }
 
     let mut lg: String = fs::read_to_string("logs.txt").expect("failed to parse log");
-    lg.push_str("\n");
+    lg.push('\n');
 
     lg.push_str(fs::read_to_string("output.txt").expect("msg").as_str());
-
-    for x in d.iter() {
-        deps.push(format!(
-            "<a href=\"https://crates.io/crates/{}\">{}</a>",
-            x.clone().name,
-            x.clone().name,
-        ));
+    if !d.dependencies.is_empty() {
+        for x in d.dependencies.iter() {
+            deps.push(format!(
+                "<a href=\"https://crates.io/crates/{}\">{}</a>",
+                x.clone().name,
+                x.clone().name,
+            ));
+        }
     }
-    let l: Utf8PathBuf = m
-        .root_package()
-        .expect("msg")
-        .clone()
-        .license_file
-        .expect("msg");
+
     let msg = match flash {
         Some(x) => x.message().to_string(),
         None => "".to_string(),
@@ -500,27 +495,15 @@ fn manage(project: &str, flash: Option<FlashMessage>) -> Template {
             project: project.to_string(),
             projects: projects(project),
             editor: editor(),
-            readme: readme(m.root_package().expect("msg").readme().expect("").as_str()),
+            readme: readme(&d.readme.clone().expect("reade").to_string().as_str()),
             dependencies: deps,
-            authors: m.root_package().expect("msg").authors.clone(),
-            repository: m
-                .root_package()
-                .expect("msg")
-                .clone()
-                .repository
-                .expect("msg")
-                .to_string(),
-            license: fs::read_to_string(l).expect("msg"),
+            authors: d.authors.clone(),
+            repository: d.repository.clone().expect("repo"),
             message: Some(msg),
             log: lg,
             crates,
-            description: m
-                .root_package()
-                .expect("msg")
-                .clone()
-                .description
-                .expect("msg")
-                .to_string(),
+            license : fs::read_to_string(d.license_file.clone().expect("license").to_string().as_str()).expect("linces"),
+            description: d.description.clone().expect("desc"),
         },
     )
 }
